@@ -9,12 +9,12 @@ Columnas y tipos:
 - Impuesto: int64
 - Kilometraje: float64
 - Cilindraje: float64
-- Fabricante: str
-- Modelo: str
-- Tipo de combustible: str
-- Interior de cuero: str
-- Tipo de caja: str
-- Categoría: str
+- Fabricante: object
+- Modelo: object
+- Tipo de combustible: object
+- Interior de cuero: object
+- Tipo de caja: object
+- Categoría: object
 - Precio: int64
 
 Valores nulos por columna:
