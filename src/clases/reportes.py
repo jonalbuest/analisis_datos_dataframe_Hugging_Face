@@ -24,7 +24,8 @@ class Reportes:
             *[f"- {columna}: {tipo}" for columna, tipo in df.dtypes.items()],
             "",
             "Valores nulos por columna:",
-            *[f"- {columna}: {cantidad}" for columna, cantidad in df.isna().sum().items()],
+            *[f"- {columna}: {cantidad}" for columna,
+                cantidad in df.isna().sum().items()],
         ]
 
         if not numericas.empty:
