@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Literal
-from datasets import load_dataset  
+from datasets import load_dataset
 import pandas as pd
 
 FileType = Literal["csv", "json", "parquet", "xlsx"]
@@ -53,11 +53,11 @@ class HFDatasetLoader:
         if self.max_rows is not None and self.max_rows < 0:
             raise ValueError("max_rows debe ser mayor o igual que cero.")
         if self.file_type is not None and self.filename is None:
-            raise ValueError("filename es obligatorio cuando se indica file_type.")
+            raise ValueError(
+                "filename es obligatorio cuando se indica file_type.")
 
     def load(self) -> pd.DataFrame:
         """Descarga el dataset, lo guarda si se configuró una salida y retorna el DataFrame."""
-        
 
         dataset = load_dataset(
             self.dataset_name,
@@ -95,12 +95,14 @@ class HFDatasetLoader:
             normalized = "xlsx"
         if normalized not in cls._SUPPORTED_FILE_TYPES:
             supported = ", ".join(sorted(cls._SUPPORTED_FILE_TYPES))
-            raise ValueError(f"Tipo de archivo no soportado: {file_type}. Use: {supported}.")
+            raise ValueError(
+                f"Tipo de archivo no soportado: {file_type}. Use: {supported}.")
         return normalized
 
     def _save(self, df: pd.DataFrame) -> None:
         assert self.filename is not None
-        file_type = self.file_type or self._normalize_file_type(self.filename.suffix)
+        file_type = self.file_type or self._normalize_file_type(
+            self.filename.suffix)
         if file_type is None:
             raise ValueError(
                 "No se pudo inferir el tipo de archivo. Indique file_type "
