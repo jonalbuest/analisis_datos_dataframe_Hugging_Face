@@ -1,7 +1,12 @@
 
 class HfLoader:
     
-    """Clase para cargar y procesar datos desde Hugging Face."""
+    """Clase para cargar y procesar datos desde Hugging Face.
     
     Args:
-        datase
+        dataset_name (str): Nombre del dataset en Hugging Face.
+        split (str): División del dataset a cargar (por ejemplo, 'train', 'test').
+        columns (list): Lista de columnas a seleccionar del dataset.
+        limit (int): Número máximo de registros a cargar.
+        
+        """
