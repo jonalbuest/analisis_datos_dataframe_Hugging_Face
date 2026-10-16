@@ -1,42 +1,42 @@
 REPORTE DEL DATAFRAME
 ============================================================
-Filas: 15389
+Filas: 12810
 Columnas: 11
-Duplicados: 2579
+Duplicados: 0
 
 Columnas y tipos:
-- Prod. year: int64
-- Levy: int64
-- Mileage: float64
-- Engine volume: float64
-- Manufacturer: object
-- Model: object
-- Fuel type: object
-- Leather interior: object
-- Gear box type: object
-- Category: object
-- Price: int64
+- Año de producción: int64
+- Impuesto: int64
+- Kilometraje: float64
+- Cilindraje: float64
+- Fabricante: str
+- Modelo: str
+- Tipo de combustible: str
+- Interior de cuero: str
+- Tipo de caja: str
+- Categoría: str
+- Precio: int64
 
 Valores nulos por columna:
-- Prod. year: 0
-- Levy: 0
-- Mileage: 0
-- Engine volume: 0
-- Manufacturer: 0
-- Model: 0
-- Fuel type: 0
-- Leather interior: 0
-- Gear box type: 0
-- Category: 0
-- Price: 0
+- Año de producción: 0
+- Impuesto: 0
+- Kilometraje: 0
+- Cilindraje: 0
+- Fabricante: 0
+- Modelo: 0
+- Tipo de combustible: 0
+- Interior de cuero: 0
+- Tipo de caja: 0
+- Categoría: 0
+- Precio: 0
 
 Estadísticas numéricas:
-       Prod. year       Levy       Mileage  Engine volume         Price
-count   15389.000  15389.000  1.538900e+04      15389.000  1.538900e+04
-mean     2010.944   1126.826  1.578701e+06          2.308  1.894767e+04
-std         5.637    727.227  4.962160e+07          0.880  2.128972e+05
-min      1939.000      0.000  0.000000e+00          0.000  1.000000e+00
-25%      2009.000    707.000  6.991800e+04          1.800  5.331000e+03
-50%      2012.000    891.000  1.254450e+05          2.000  1.317200e+04
-75%      2015.000   1327.000  1.888880e+05          2.500  2.226600e+04
-max      2020.000  11706.000  2.147484e+09         20.000  2.630750e+07
+       Año de producción   Impuesto   Kilometraje  Cilindraje        Precio
+count          12810.000  12810.000  1.281000e+04   12810.000  1.281000e+04
+mean            2010.592   1148.946  1.862314e+06       2.218  2.067749e+04
+std                5.945    764.495  5.438370e+07       0.811  2.332178e+05
+min             1939.000      0.000  0.000000e+00       0.000  1.000000e+00
+25%             2008.000    707.000  6.626950e+04       1.700  7.370000e+03
+50%             2012.000    891.000  1.208020e+05       2.000  1.411300e+04
+75%             2015.000   1347.000  1.800000e+05       2.500  2.352100e+04
+max             2020.000  11706.000  2.147484e+09      20.000  2.630750e+07
