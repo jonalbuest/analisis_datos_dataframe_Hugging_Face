@@ -16,7 +16,7 @@ env.bak/
 venv.bak/
 
 # carpetas
-sincronicas/datos
-sincronicas/reportes
+src/sincronicas/datos
+src/sincronicas/reportes
 
 
