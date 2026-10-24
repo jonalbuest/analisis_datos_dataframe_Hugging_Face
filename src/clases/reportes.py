@@ -9,13 +9,32 @@ import pandas as pd
 class Reportes:
     """Imprime y guarda un resumen legible de un DataFrame."""
 
-    def generar_reporte(self, df: pd.DataFrame) -> str:
+    def generar_reporte(
+        self,
+        df: pd.DataFrame,
+        dataset_name: str | None = None,
+        config: str | None = None,
+        split: str | None = None,
+        muestra: str | None = None,
+    ) -> str:
         """Genera el contenido textual del reporte."""
         self._validar_dataframe(df)
         numericas = df.select_dtypes(include="number")
         lineas = [
             "REPORTE DEL DATAFRAME",
             "=" * 60,
+        ]
+
+        if dataset_name is not None:
+            lineas.append(f"Dataset: {dataset_name}")
+        if config is not None:
+            lineas.append(f"Configuración: {config}")
+        if split is not None:
+            lineas.append(f"Split: {split}")
+        if muestra is not None:
+            lineas.append(f"Muestra / Cobertura: {muestra}")
+
+        lineas += [
             f"Filas: {len(df)}",
             f"Columnas: {len(df.columns)}",
             f"Duplicados: {int(df.duplicated().sum())}",
@@ -37,15 +56,46 @@ class Reportes:
 
         return "\n".join(lineas) + "\n"
 
-    def imprimir_reporte(self, df: pd.DataFrame) -> None:
+    def imprimir_reporte(
+        self,
+        df: pd.DataFrame,
+        dataset_name: str | None = None,
+        config: str | None = None,
+        split: str | None = None,
+        muestra: str | None = None,
+    ) -> None:
         """Imprime en la consola el reporte del DataFrame."""
-        print(self.generar_reporte(df), end="")
+        print(
+            self.generar_reporte(
+                df,
+                dataset_name=dataset_name,
+                config=config,
+                split=split,
+                muestra=muestra,
+            ),
+            end="",
+        )
 
-    def guardar_reporte(self, df: pd.DataFrame, ruta: str | Path) -> Path:
+    def guardar_reporte(
+        self,
+        df: pd.DataFrame,
+        ruta: str | Path,
+        dataset_name: str | None = None,
+        config: str | None = None,
+        split: str | None = None,
+        muestra: str | None = None,
+    ) -> Path:
         """Guarda el reporte en un archivo de texto y devuelve su ruta."""
         path = Path(ruta)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(self.generar_reporte(df), encoding="utf-8")
+        reporte = self.generar_reporte(
+            df,
+            dataset_name=dataset_name,
+            config=config,
+            split=split,
+            muestra=muestra,
+        )
+        path.write_text(reporte, encoding="utf-8")
         return path
 
     @staticmethod

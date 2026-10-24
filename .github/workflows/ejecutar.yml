@@ -1,4 +1,4 @@
-name: Ejecutar Semana 1
+name: Ejecutar Transformaciones (AE1 y AE2)
 
 on:
   push:
@@ -9,11 +9,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: ejecutar-semana-1-main
+  group: ejecutar-transformaciones-main
   cancel-in-progress: false
 
 jobs:
-  ejecutar-notebook:
+  ejecutar-notebooks:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,16 +39,31 @@ jobs:
           .venv/bin/python -m pip install -r requirements.txt
           .venv/bin/python -m pip install pyarrow openpyxl
 
-      - name: Limpiar datos y reportes generados
+      - name: Limpiar datos y reportes generados (AE1 y AE2)
         run: |
-          mkdir -p src/sincronicas/datos src/sincronicas/reportes
-          find src/sincronicas/datos -mindepth 1 -delete
-          find src/sincronicas/reportes -mindepth 1 -delete
+          mkdir -p src/AE1/sincronicas/datos src/AE1/sincronicas/reportes
+          find src/AE1/sincronicas/datos -mindepth 1 -delete
+          find src/AE1/sincronicas/reportes -mindepth 1 -delete
 
-      - name: Ejecutar transformaciones.ipynb
-        working-directory: src/sincronicas
+          mkdir -p src/AE2/datos src/AE2/resultados
+          find src/AE2/datos -mindepth 1 -delete
+          find src/AE2/resultados -mindepth 1 -delete
+
+      - name: Ejecutar transformaciones.ipynb (AE1)
+        working-directory: src/AE1/sincronicas
         run: |
-          source ../../.venv/bin/activate
+          source ../../../.venv/bin/activate
+          jupyter nbconvert \
+            --to notebook \
+            --execute \
+            --inplace \
+            --ExecutePreprocessor.timeout=1800 \
+            transformaciones.ipynb
+
+      - name: Ejecutar transformaciones.ipynb (AE2)
+        working-directory: src/AE2/notebooks
+        run: |
+          source ../../../.venv/bin/activate
           jupyter nbconvert \
             --to notebook \
             --execute \
@@ -60,12 +75,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f src/sincronicas/datos src/sincronicas/reportes src/sincronicas/transformaciones.ipynb
+          git add -f \
+            src/AE1/sincronicas/datos \
+            src/AE1/sincronicas/reportes \
+            src/AE1/sincronicas/transformaciones.ipynb \
+            src/AE2/datos \
+            src/AE2/resultados \
+            src/AE2/notebooks/transformaciones.ipynb
 
           if git diff --cached --quiet; then
             echo "No se generaron cambios."
             exit 0
           fi
 
-          git commit -m "chore: actualizar resultados de transformaciones"
+          git commit -m "chore: actualizar resultados de transformaciones AE1 y AE2"
           git push origin HEAD:main
