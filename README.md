@@ -230,19 +230,6 @@ Archivos que se generan:
 | AE1 | `src/AE1/sincronicas/datos/car_dealership.csv` | `src/AE1/sincronicas/reportes/car_dealership.txt` |
 | AE2 | `src/AE2/datos/reg_cat_house_sales.csv` | `src/AE2/resultados/reg_cat_house_sales.txt` |
 
-### Token de Hugging Face (opcional)
-
-Los dos datasets son públicos y no requieren token. Para evitar el aviso de solicitudes sin autenticación:
-
-- **Local:** `hf auth login`
-- **GitHub Actions:** crear el secreto `HF_TOKEN` en *Settings → Secrets and variables → Actions* y agregarlo a los pasos que ejecutan los notebooks:
-
-  ```yaml
-  env:
-    HF_TOKEN: ${{ secrets.HF_TOKEN }}
-  ```
-
-**Nunca escribas tokens ni contraseñas en el código ni en el repositorio.**
 
 ---
 
