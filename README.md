@@ -42,6 +42,7 @@ Repositorio del **Proyecto Integrador III – Analítica de Datos** (IU Digital)
 │   │       └── reportes/                 # Resumen .txt (lo genera el notebook)
 │   └── AE2/
 │       ├── documento/                    # Documento inicial del proyecto (.docx)
+│       │   └── EA2_Propuesta_HouseSales.docx # Solución de la actividad
 │       ├── notebooks/
 │       │   └── transformaciones.ipynb    # Reconocimiento, transformaciones y reporte (house_sales)
 │       ├── datos/                        # CSV descargado (lo genera el notebook)
