@@ -37,7 +37,7 @@ Repositorio del **Proyecto Integrador** de la asignatura *Proyecto Integrado III
 │   │       ├── datos/
 │   │       ├── reportes/
 │   │       └── transformaciones.ipynb
-│   └── AE2/                             # Entrega Actividad Evaluativa 2
+│   └── AE2/                             # Actividad 2
 │       ├── datos/                       # CSV descargado automáticamente (reg_cat_house_sales.csv)
 │       ├── documento/                   # Documento inicial del proyecto (.docx)
 │       ├── notebooks/
