@@ -37,12 +37,12 @@ Repositorio del **Proyecto Integrador III – Analítica de Datos** (IU Digital)
 │   │   └── reportes.py                   # Reportes: DataFrame → resumen en pantalla y en .txt
 │   ├── AE1/
 │   │   └── sincronicas/
-│   │       ├── transformaciones.ipynb    # Carga, transformaciones y reporte (car_dealership)
-│   │       ├── datos/                    # CSV descargado (lo genera el notebook)
-│   │       └── reportes/                 # Resumen .txt (lo genera el notebook)
-│   └── AE2/
-│       ├── documento/                    # Documento inicial del proyecto (.docx)
-│       │   └── EA2_Propuesta_HouseSales.docx # Solución de la actividad
+│   │       ├── datos/
+│   │       ├── reportes/
+│   │       └── transformaciones.ipynb
+│   └── AE2/                             # Actividad 2
+│       ├── datos/                       # CSV descargado automáticamente (reg_cat_house_sales.csv)
+│       ├── documento/                   # Documento inicial del proyecto (.docx)
 │       ├── notebooks/
 │       │   └── transformaciones.ipynb    # Reconocimiento, transformaciones y reporte (house_sales)
 │       ├── datos/                        # CSV descargado (lo genera el notebook)
