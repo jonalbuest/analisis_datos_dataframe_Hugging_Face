@@ -1,6 +1,6 @@
 REPORTE DEL DATAFRAME
 ================================================================================
-Fecha de generación: 2026-11-04 19:17:08
+Fecha de generación: 2026-11-05 01:10:00
 Dataset: inria-soda/tabular-benchmark
 Configuración: reg_cat_house_sales
 Split: train
