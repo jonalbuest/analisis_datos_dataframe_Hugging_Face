@@ -1,0 +1,159 @@
+id_cuadrante,lat_cuadrante,long_cuadrante,Barrio / Sector,Municipio / Subregión,Acceso a transporte,Parques y zonas verdes,Nivel de comercio y servicios,Zonas comunes y entorno,Cuerpo de agua cercano,Modelo LLM
+47.15_-121.95,47.15,-121.95,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.15_-121.65,47.15,-121.65,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.20_-122.05,47.2,-122.05,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.20_-122.00,47.2,-122.0,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.20_-121.95,47.2,-121.95,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.35,47.25,-122.35,Federal Way,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.30,47.25,-122.3,Federal Way,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.25,47.25,-122.25,Auburn,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.20,47.25,-122.2,Auburn,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.15,47.25,-122.15,Auburn,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.10,47.25,-122.1,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.05,47.25,-122.05,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-122.00,47.25,-122.0,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-121.95,47.25,-121.95,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.25_-121.90,47.25,-121.9,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.40,47.3,-122.4,Federal Way,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.35,47.3,-122.35,Federal Way,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.30,47.3,-122.3,Federal Way,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.25,47.3,-122.25,Auburn,South King County,Alto,Alta,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.20,47.3,-122.2,Auburn,South King County,Alto,Alta,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.15,47.3,-122.15,Auburn,South King County,Alto,Alta,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.10,47.3,-122.1,Covington,South King County,Alto,Alta,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.05,47.3,-122.05,Maple Valley / Black Diamond,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-122.00,47.3,-122.0,Maple Valley / Black Diamond,South King County,Medio,Alta,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-121.95,47.3,-121.95,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-121.90,47.3,-121.9,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.30_-121.85,47.3,-121.85,Enumclaw,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.50,47.35,-122.5,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.45,47.35,-122.45,Federal Way,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.40,47.35,-122.4,Federal Way,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.35,47.35,-122.35,Federal Way,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.30,47.35,-122.3,Federal Way,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.25,47.35,-122.25,Kent,South King County,Alto,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.20,47.35,-122.2,Kent,South King County,Alto,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.15,47.35,-122.15,Covington,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.10,47.35,-122.1,Covington,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.05,47.35,-122.05,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-122.00,47.35,-122.0,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-121.95,47.35,-121.95,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.35_-121.90,47.35,-121.9,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.50,47.4,-122.5,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.45,47.4,-122.45,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.40,47.4,-122.4,Des Moines,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.35,47.4,-122.35,Des Moines,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.30,47.4,-122.3,Des Moines,South King County,Alto,Alta,Medio,Suburbano residencial familiar,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.25,47.4,-122.25,Kent,South King County,Alto,Media,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.20,47.4,-122.2,Kent,South King County,Alto,Media,Alto,Urbano denso y comercial,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.15,47.4,-122.15,Covington,South King County,Alto,Media,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.10,47.4,-122.1,Covington,South King County,Bajo,Alta,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.05,47.4,-122.05,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-122.00,47.4,-122.0,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.40_-121.95,47.4,-121.95,Maple Valley / Black Diamond,South King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.50,47.45,-122.5,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.45,47.45,-122.45,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.40,47.45,-122.4,Burien / Normandy Park,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.35,47.45,-122.35,Burien / Normandy Park,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.30,47.45,-122.3,Tukwila / SeaTac,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.25,47.45,-122.25,Tukwila / SeaTac,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.20,47.45,-122.2,Renton,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.15,47.45,-122.15,Renton,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.10,47.45,-122.1,Renton,South King County,Medio,Media,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.05,47.45,-122.05,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-122.00,47.45,-122.0,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-121.85,47.45,-121.85,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-121.80,47.45,-121.8,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-121.75,47.45,-121.75,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-121.70,47.45,-121.7,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.45_-121.40,47.45,-121.4,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.45,47.5,-122.45,Vashon Island,Vashon / Islas,Medio,Alta,Bajo,Frente costero / lacustre recreativo,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.40,47.5,-122.4,Burien / Normandy Park,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.35,47.5,-122.35,Burien / Normandy Park,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.30,47.5,-122.3,Rainier Beach / South Seattle,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.25,47.5,-122.25,Rainier Beach,Seattle,Medio,Alta,Medio,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.20,47.5,-122.2,Renton,South King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.15,47.5,-122.15,Newcastle,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.10,47.5,-122.1,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.05,47.5,-122.05,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-122.00,47.5,-122.0,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.95,47.5,-121.95,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.90,47.5,-121.9,Snoqualmie,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.85,47.5,-121.85,Snoqualmie,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.80,47.5,-121.8,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.75,47.5,-121.75,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.50_-121.70,47.5,-121.7,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.40,47.55,-122.4,West Seattle,Seattle,Alto,Alta,Medio,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.35,47.55,-122.35,West Seattle,Seattle,Alto,Alta,Medio,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.30,47.55,-122.3,Beacon Hill / Columbia City,Seattle,Alto,Alta,Medio,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.25,47.55,-122.25,Mercer Island,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.20,47.55,-122.2,Mercer Island,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.15,47.55,-122.15,Newcastle,Eastside (Bellevue/Kirkland/Redmond),Medio,Media,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.10,47.55,-122.1,Eastgate / Factoria,Eastside (Bellevue/Kirkland/Redmond),Medio,Media,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.05,47.55,-122.05,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-122.00,47.55,-122.0,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.95,47.55,-121.95,Issaquah,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Alto,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.90,47.55,-121.9,Snoqualmie / Fall City,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.85,47.55,-121.85,Snoqualmie / Fall City,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.80,47.55,-121.8,Snoqualmie / Fall City,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.75,47.55,-121.75,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.55_-121.70,47.55,-121.7,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.40,47.6,-122.4,Queen Anne / Magnolia,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.35,47.6,-122.35,Downtown / Belltown,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.30,47.6,-122.3,Capitol Hill / Central District,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.25,47.6,-122.25,Medina / Clyde Hill,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.20,47.6,-122.2,Downtown Bellevue,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.15,47.6,-122.15,Eastgate / Factoria,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.10,47.6,-122.1,Eastgate / Factoria,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.05,47.6,-122.05,Sammamish,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-122.00,47.6,-122.0,Sammamish,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-121.95,47.6,-121.95,Sammamish,Eastside (Bellevue/Kirkland/Redmond),Bajo,Alta,Bajo,Semirrural / Boscoso,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-121.90,47.6,-121.9,Snoqualmie / Fall City,North King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.60_-121.85,47.6,-121.85,Snoqualmie / Fall City,North King County,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.40,47.65,-122.4,Queen Anne / Magnolia,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.35,47.65,-122.35,Queen Anne / Magnolia,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.30,47.65,-122.3,University District / Laurelhurst,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.25,47.65,-122.25,Medina / Clyde Hill,Eastside (Bellevue/Kirkland/Redmond),Medio,Media,Medio,Suburbano residencial familiar,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.20,47.65,-122.2,Medina / Clyde Hill,Eastside (Bellevue/Kirkland/Redmond),Medio,Media,Medio,Suburbano residencial familiar,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.15,47.65,-122.15,Redmond,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.10,47.65,-122.1,Redmond,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.05,47.65,-122.05,Sammamish,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Semirrural / Boscoso,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-122.00,47.65,-122.0,Sammamish,Eastside (Bellevue/Kirkland/Redmond),Medio,Alta,Medio,Semirrural / Boscoso,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-121.95,47.65,-121.95,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-121.90,47.65,-121.9,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.65_-121.85,47.65,-121.85,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.40,47.7,-122.4,Ballard / Crown Hill - Seattle,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.35,47.7,-122.35,Green Lake / Wallingford - Seattle,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.30,47.7,-122.3,Northgate / Lake City - Seattle,Seattle,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.25,47.7,-122.25,Kirkland,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.20,47.7,-122.2,Kirkland,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.15,47.7,-122.15,Redmond,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.10,47.7,-122.1,Redmond,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.05,47.7,-122.05,Redmond,Eastside (Bellevue/Kirkland/Redmond),Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-122.00,47.7,-122.0,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.95,47.7,-121.95,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.90,47.7,-121.9,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.85,47.7,-121.85,Duvall / Carnation,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.40,47.7,-121.4,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.35,47.7,-121.35,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.70_-121.30,47.7,-121.3,North Bend,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.40,47.75,-122.4,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.35,47.75,-122.35,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.30,47.75,-122.3,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.25,47.75,-122.25,Kenmore / Bothell,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.20,47.75,-122.2,Kenmore / Bothell,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.15,47.75,-122.15,Woodinville,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.10,47.75,-122.1,Woodinville,North King County,Medio,Media,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.05,47.75,-122.05,Woodinville,North King County,Medio,Media,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-122.00,47.75,-122.0,Duvall,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-121.95,47.75,-121.95,Duvall,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-121.90,47.75,-121.9,Duvall,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.75_-121.45,47.75,-121.45,Snoqualmie,Foothills / Este Semirrural,Bajo,Alta,Bajo,Semirrural / Boscoso,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.40,47.8,-122.4,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.35,47.8,-122.35,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.30,47.8,-122.3,Shoreline / Lake Forest Park,North King County,Alto,Alta,Alto,Urbano denso y comercial,Estrecho marino (Puget Sound),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.25,47.8,-122.25,Kenmore / Bothell,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.20,47.8,-122.2,Kenmore / Bothell,North King County,Alto,Alta,Alto,Urbano denso y comercial,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.15,47.8,-122.15,Woodinville,North King County,Medio,Media,Medio,Suburbano residencial familiar,Lago interior (Washington/Sammamish/Union),nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.10,47.8,-122.1,Woodinville,North King County,Medio,Alta,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
+47.80_-122.05,47.8,-122.05,Woodinville,North King County,Medio,Alta,Medio,Suburbano residencial familiar,Río / Interior sin costa,nvidia/nemotron-3.5-lightning-30b-a3b
