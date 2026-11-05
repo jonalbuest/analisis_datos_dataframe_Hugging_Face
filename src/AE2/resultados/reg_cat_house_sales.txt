@@ -1,0 +1,62 @@
+REPORTE DEL DATAFRAME
+============================================================
+Dataset: inria-soda/tabular-benchmark
+Configuración: reg_cat_house_sales
+Split: train
+Muestra / Cobertura: Dataset completo depurado (21521 de 21613 registros originales; sin muestreo aleatorio)
+Filas: 21521
+Columnas: 19
+Duplicados: 0
+
+Columnas y tipos:
+- Habitaciones: int64
+- Baños: float64
+- Área habitable (sqft): int64
+- Área del lote (sqft): int64
+- Vista al agua: object
+- Calificación: int64
+- Área sobre suelo (sqft): int64
+- Área sótano (sqft): int64
+- Año de construcción: int64
+- Año de renovación: int64
+- Latitud: float64
+- Longitud: float64
+- Área habitable vecinos (sqft): int64
+- Área lote vecinos (sqft): int64
+- Año de venta: int64
+- Mes de venta: int64
+- Día de venta: int64
+- Precio (log): float64
+- Precio (USD): float64
+
+Valores nulos por columna:
+- Habitaciones: 0
+- Baños: 0
+- Área habitable (sqft): 0
+- Área del lote (sqft): 0
+- Vista al agua: 0
+- Calificación: 0
+- Área sobre suelo (sqft): 0
+- Área sótano (sqft): 0
+- Año de construcción: 0
+- Año de renovación: 0
+- Latitud: 0
+- Longitud: 0
+- Área habitable vecinos (sqft): 0
+- Área lote vecinos (sqft): 0
+- Año de venta: 0
+- Mes de venta: 0
+- Día de venta: 0
+- Precio (log): 0
+- Precio (USD): 0
+
+Estadísticas numéricas:
+       Habitaciones      Baños  Área habitable (sqft)  Área del lote (sqft)  Calificación  Área sobre suelo (sqft)  Área sótano (sqft)  Año de construcción  Año de renovación    Latitud   Longitud  Área habitable vecinos (sqft)  Área lote vecinos (sqft)  Año de venta  Mes de venta  Día de venta  Precio (log)  Precio (USD)
+count     21521.000  21521.000              21521.000             21521.000     21521.000                21521.000           21521.000            21521.000          21521.000  21521.000  21521.000                      21521.000                 21521.000     21521.000     21521.000     21521.000     21521.000     21521.000
+mean          3.377      2.121               2084.382             15096.243         7.665                 1791.923             292.458             1971.096             84.394     47.560   -122.214                       1988.457                 12745.742      2014.323         6.574        15.684        13.050    541064.726
+std           0.900      0.766                916.867             41470.928         1.168                  827.037             443.148               29.353            401.664      0.139      0.140                        685.169                 27284.681         0.468         3.115         8.636         0.526    367399.652
+min           1.000      1.000                390.000               520.000         4.000                  390.000               0.000             1900.000              0.000     47.156   -122.519                        399.000                   651.000      2014.000         1.000         1.000        11.264     78001.000
+25%           3.000      1.750               1430.000              5040.000         7.000                 1200.000               0.000             1952.000              0.000     47.471   -122.328                       1490.000                  5100.000      2014.000         4.000         8.000        12.685    323001.000
+50%           3.000      2.250               1920.000              7617.000         7.000                 1560.000               0.000             1975.000              0.000     47.572   -122.230                       1840.000                  7620.000      2014.000         6.000        16.000        13.017    450001.000
+75%           4.000      2.500               2550.000             10661.000         8.000                 2220.000             570.000             1997.000              0.000     47.678   -122.125                       2370.000                 10080.000      2015.000         9.000        23.000        13.377    645001.000
+max          11.000      8.000              13540.000           1651359.000        13.000                 9410.000            4820.000             2015.000           2015.000     47.778   -121.315                       6210.000                871200.000      2015.000        12.000        31.000        15.857   7700001.000
