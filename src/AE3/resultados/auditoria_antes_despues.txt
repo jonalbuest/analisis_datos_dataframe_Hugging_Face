@@ -13,11 +13,11 @@ Total de columnas (variables)             18                               43   
 
 2. Detalle de controles de calidad:
                            Control de calidad                              Regla evaluada  Registros detectados  % del total                                                                         Decisión y justificación
-                  Valores nulos en el esquema                  df.isna().sum().sum() == 0                     0        0.000                           Sin acción de imputación: las 18 columnas tienen 100 % de completitud.
+                  Valores nulos en el esquema                  df.isna().sum().sum() == 0                     0        0.000                                     Sin acción de imputación: no hay valores nulos para imputar.
                  Filas exactamente duplicadas                 df.duplicated(keep='first')                     0        0.000                          Se ejecuta drop_duplicates() por control preventivo; 0 filas afectadas.
                    Viviendas sin habitaciones                                bedrooms < 1                    13        0.060                Filtrar: no corresponden a una unidad residencial estándar comparable en avalúos.
 Atípico extremo de digitación en habitaciones                               bedrooms > 15                     1        0.005 Filtrar: registro índice 15870 con 33 habitaciones en 1,620 sqft (error de captura documentado).
-                  Viviendas sin baño completo    bathrooms < 1.0 (incluye 10 con 0 baños)                    86        0.398      Filtrar: una vivienda habitable requiere al menos 1 baño completo para valoración estándar.
+                  Viviendas sin baño completo    bathrooms < 1.0 (incluye 10 con 0 baños)                    86        0.398                                        Filtrar: una vivienda habitable requiere al menos 1 baño.
   Total combinado de registros inconsistentes bedrooms fuera de [1, 15] o bathrooms < 1.0                    92        0.426                        Se descartan 92 filas (0.43 %), conservando 21521 viviendas consistentes.
      Consistencia aditiva de áreas interiores   sqft_living == sqft_above + sqft_basement                     0        0.000                    0 discrepancias: confirma coherencia interna de las mediciones de superficie.
 
