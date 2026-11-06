@@ -108,8 +108,8 @@ En esta etapa se completó la limpieza profunda, enriquecimiento multidimensiona
 
 | Pregunta | Dimensión Analizada | Hallazgo Clave |
 |---|---|---|
-| **P1** | Tamaño habitable y capacidad ($m^2$, hab., baños) | El precio total escala fuertemente con el área ($r > 0.70$): viviendas pequeñas (<130 $m^2$) presentan una mediana de USD 319,950 vs. USD 850,000 en viviendas grandes (>270 $m^2$). Sin embargo, las viviendas pequeñas tienen el costo unitario más alto (**USD 3,118.48/$m^2$** vs. USD 2,431.31/$m^2$ en grandes), impulsado por la alta densidad y el valor del suelo en el casco urbano central de Seattle. |
-| **P2** | Calificación constructiva (*grade*) | El estándar de construcción es el multiplicador más determinante del valor: el precio mediano asciende desde USD 270,000 en calificación Baja (grados 4–6) a USD 450,000 en Media (7–8), USD 715,000 en Alta (9) y **USD 1,038,000 en Lujo (10–13)**, representando una prima acumulada de **3.84×**. |
+| **P1** | Tamaño habitable y capacidad ($m^2$, hab., baños) | El precio total aumenta con el área: viviendas pequeñas (<130 $m^2$) presentan una mediana de USD 320,000 vs. USD 869,950 en viviendas muy grandes (≥280 $m^2$). Sin embargo, las viviendas pequeñas tienen el costo unitario más alto (**USD 3,118.48/$m^2$** vs. USD 2,621.96/$m^2$ en las muy grandes), impulsado por la alta densidad y el valor del suelo en el casco urbano central de Seattle. |
+| **P2** | Calificación constructiva (*grade*) | El estándar de construcción es el multiplicador más determinante del valor: el precio mediano asciende desde USD 270,000 en calificación Baja (grados 4–6) a USD 375,000 en Estándar (grado 7), USD 562,000 en Media-Alta (grados 8–9) y **USD 1,038,000 en Alta/Lujo (grados 10–13)**, representando una prima acumulada de **3.84×**. |
 | **P3** | Tipo de frente acuático (lago vs. mar) | Las viviendas frente al agua representan solo el 0.73% del mercado ($n=157$), pero muestran una valoración extrema: las propiedades sobre **lagos interiores** (Lake Washington y Lake Sammamish, $n=81$) alcanzan una mediana récord de **USD 1,955,000** (**USD 6,575.26/$m^2$**), superando en más del doble a las ubicadas sobre agua salada en Puget Sound (USD 908,250 median) y cuadruplicando a las propiedades sin frente acuático (USD 450,000). |
 | **P4** | Subregiones, barrios y entorno (Nemotron) | La subregión **Eastside** ostenta el precio mediano más elevado (USD 640,000), pero la ciudad de **Seattle** lidera en costo por metro cuadrado (**USD 3,470.95/$m^2$** vs. USD 1,774.88/$m^2$ en South King County). Los enclaves con mayor plusvalía son **Medina** (mediana USD 1,020,000), **Downtown Bellevue** (USD 987,000) y **U-District / Laurelhurst** (USD 805,000). |
 | **P5** | Antigüedad y remodelación | Las viviendas remodeladas (4.23% del mercado, $n=910$) obtienen un precio mediano de **USD 600,500** frente a USD 449,500 en las no remodeladas, reflejando una **prima bruta de modernización de +33.6% (+USD 151,000)**. |
@@ -139,7 +139,7 @@ pip install -r requirements.txt
 
 ### 2. Configuración opcional de API Key de NVIDIA
 
-El repositorio incluye el archivo `src/AE3/datos/catalogo_barrios_nemotron.csv`, por lo que el pipeline y los notebooks corren **de forma autónoma y sin dependencias externas**.
+El repositorio incluye el archivo `src/AE3/datos/catalogo_barrios_nemotron.csv`, así que el notebook de AE3 **no llama a la API de NVIDIA** para ejecutarse. La descarga inicial del dataset desde Hugging Face sí requiere conexión a internet.
 
 Si deseas regenerar el catálogo espacial consultando directamente el modelo **NVIDIA Nemotron** (`nvidia/nemotron-3.5-lightning-30b-a3b`), crea un archivo `.env` en la raíz del proyecto:
 
@@ -172,6 +172,49 @@ El archivo `.github/workflows/ejecutar.yml` orquesta la integración continua en
 2. Limpia los datos temporales preservando el catálogo espacial local.
 3. Ejecuta secuencialmente los tres notebooks (`AE1`, `AE2` y `AE3`) con `jupyter nbconvert`.
 4. Realiza commit y push automático de los datasets generados, tablas de resumen y reportes `.txt` utilizando el bot oficial `github-actions[bot]`.
+
+---
+
+## Preguntas de negocio y tablas de resultados (AE3)
+
+Rutas relativas a la raíz del repositorio.
+
+| Pregunta | Tablas | Nivel de detalle |
+|---|---|---|
+| P1. Tamaño y capacidad | `src/AE3/datos/tabla_p1_tamano_vivienda.csv`, `tabla_p1b_habitaciones.csv` | Rango de área habitable (m²), habitaciones |
+| P2. Calificación constructiva | `tabla_p2_calificacion_constructiva.csv`, `tabla_p2b_calificacion_detalle.csv` | Nivel y grado de calificación |
+| P3. Frente al agua | `tabla_p3_vista_mar_lago.csv` | Mar (Puget Sound), lago interior, sin vista |
+| P4. Subregión, barrio y entorno | `tabla_p4_subregiones_barrios.csv`, `tabla_p4b_barrios_top15.csv`, `tabla_p4c_transporte_comercio_parques.csv`, `tabla_p4d_zonas_comunes_parques.csv` | Municipio, barrio (n ≥ 50), transporte, comercio, parques (**inferidos con Nemotron**) |
+| P5. Remodelación y década | `tabla_p5_antiguedad_remodelacion.csv`, `tabla_p5b_resumen_remodelacion.csv` | Década de construcción y condición de remodelación |
+| P6. Periodo de venta | `tabla_p6_periodo_ventas.csv` | Mes (2014-05 a 2015-05) |
+
+**Otros archivos de salida:**
+
+- Dataset preparado y enriquecido (43 variables): `src/AE3/datos/reg_cat_house_sales_enriquecido.csv`
+- Copia sin modificar para comparar: `src/AE3/datos/reg_cat_house_sales_raw.csv`
+- Catálogo espacial (cuadrantes de 0,05°): `src/AE3/datos/catalogo_barrios_nemotron.csv`
+- Auditoría antes vs. después: `src/AE3/resultados/auditoria_antes_despues.txt`
+- Resumen descriptivo del DataFrame final (generado por el notebook): `src/AE3/resultados/resumen_reg_cat_house_sales_enriquecido.txt`
+
+---
+
+## Datos y permisos de publicación
+
+- **Fuente:** `inria-soda/tabular-benchmark`, configuración `reg_cat_house_sales`, split `train`. Es un conjunto público de Hugging Face.
+- **Licencia:** la ficha de Hugging Face no declara licencia. Kaggle y OpenML indican CC0 (dominio público). Ver la ficha en `src/AE2/documento/EA2_Propuesta_HouseSales.docx`.
+- **Datos personales:** no contiene. Incluye coordenadas geográficas de cada vivienda vendida, sin nombres ni direcciones.
+- **Reproducción:** el repositorio publica el CSV preparado y los resultados. Para reproducir desde cero, ejecutar el notebook de AE3 (la descarga usa HFDatasetLoader y no requiere token). Si el docente o la plataforma restringen la publicación del CSV, el procedimiento es el mismo: descargar el dataset original desde Hugging Face y ejecutar el notebook.
+
+---
+
+## Limitaciones de AE3
+
+- **Análisis descriptivo:** las diferencias entre grupos no son efectos causales. Tamaño, calificación y ubicación están relacionados entre sí.
+- **Atributos inferidos con NVIDIA Nemotron:** barrio, municipio, transporte, parques, comercio, zonas comunes y cuerpo de agua se asignan por cuadrante de ~4–5 km, sin una fuente verificada. Tomarlos como orientativos. Validación pendiente contra una fuente pública.
+- **Frente al agua:** la submuestra es pequeña (n = 81 lago interior y n = 76 mar). La clasificación depende de la misma inferencia.
+- **Mayo de 2015 es parcial:** los datos llegan hasta el 27 de mayo (642 ventas). No comparar ese mes con los completos sin ajustar.
+- **Periodo y cobertura:** ventas de mayo de 2014 a mayo de 2015. No representan el mercado actual ni otra región.
+- **Registros excluidos:** 92 viviendas (0,43 %) por consistencia física. Ver la auditoría.
 
 ---
 
