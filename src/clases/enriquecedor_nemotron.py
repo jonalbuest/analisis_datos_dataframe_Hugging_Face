@@ -91,7 +91,7 @@ class EnriquecedorNemotron:
         self,
         modelo: str = "nvidia/nemotron-3.5-lightning-30b-a3b",
         base_url: str = "https://integrate.api.nvidia.com/v1",
-        paso_cuadrante: float = 0.05,
+        paso_cuadrante: float = 0.05, 
         ruta_env: str | Path | None = None,
     ) -> None:
         self.modelo = modelo
@@ -182,7 +182,7 @@ class EnriquecedorNemotron:
     def calcular_distancias_polos(self, df: pd.DataFrame) -> pd.DataFrame:
         """Calcula distancias geodésicas Haversine (km) a centros comerciales y de transporte."""
         enr = df.copy()
-        lat = enr["Latitud"].to_numpy()
+        lat = enr["Latitud"].to_numpy()  
         lon = enr["Longitud"].to_numpy()
 
         for nombre_polo, (lat_ref, lon_ref) in self.POLOS_REFERENCIA.items():
@@ -210,7 +210,7 @@ class EnriquecedorNemotron:
     def enriquecer_con_nemotron(
         self,
         df: pd.DataFrame,
-        ruta_catalogo: str | Path,
+        ruta_catalogo: str | Path, 
         tamano_lote: int = 16,
         forzar_regeneracion: bool = False,
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -224,8 +224,8 @@ class EnriquecedorNemotron:
         ruta_cat.parent.mkdir(parents=True, exist_ok=True)
 
         trabajo = df.copy()
-        lat_q = (trabajo["Latitud"] / self.paso_cuadrante).round(0) * self.paso_cuadrante
-        lon_q = (trabajo["Longitud"] / self.paso_cuadrante).round(0) * self.paso_cuadrante
+        lat_q = (trabajo["Latitud"] / self.paso_cuadrante).round(0) * self.paso_cuadrante # convertir a cuadrante
+        lon_q = (trabajo["Longitud"] / self.paso_cuadrante).round(0) * self.paso_cuadrante # convertir a cuadrante
         trabajo["_id_cuadrante"] = [
             f"{la:.2f}_{lo:.2f}" for la, lo in zip(lat_q, lon_q)
         ]
@@ -244,11 +244,11 @@ class EnriquecedorNemotron:
         )
 
         catalogo_existente = pd.DataFrame()
-        if ruta_cat.exists() and not forzar_regeneracion:
+        if ruta_cat.exists() and not forzar_regeneracion: # forzar_regeneracion = True para ignorar el catálogo existente y regenerarlo
             catalogo_existente = pd.read_csv(ruta_cat)
 
         ids_existentes = (
-            set(catalogo_existente["id_cuadrante"].astype(str))
+            set(catalogo_existente["id_cuadrante"].astype(str)) # astype(str) para evitar problemas de tipo al comparar con cuadrantes_df
             if not catalogo_existente.empty and "id_cuadrante" in catalogo_existente.columns
             else set()
         )
@@ -623,13 +623,13 @@ class EnriquecedorNemotron:
         lat2: float,
         lon2: float,
     ) -> np.ndarray:
-        rad_lat1 = np.radians(lat1)
-        rad_lon1 = np.radians(lon1)
-        rad_lat2 = np.radians(lat2)
+        rad_lat1 = np.radians(lat1) # Convertir latitudes y longitudes de grados a radianes
+        rad_lon1 = np.radians(lon1) # Convertir latitudes y longitudes de grados a radianes
+        rad_lat2 = np.radians(lat2) 
         rad_lon2 = np.radians(lon2)
 
-        dlat = rad_lat2 - rad_lat1
-        dlon = rad_lon2 - rad_lon1
+        dlat = rad_lat2 - rad_lat1 # Diferencia de latitudes en radianes. Esto es necesario para calcular la distancia geodésica entre dos puntos en la superficie de la Tierra.
+        dlon = rad_lon2 - rad_lon1 # Diferencia de longitudes en radianes. Esto es necesario para calcular la distancia geodésica entre dos puntos en la superficie de la Tierra.
 
         a = (
             np.sin(dlat / 2.0) ** 2

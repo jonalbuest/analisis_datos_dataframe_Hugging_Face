@@ -69,7 +69,7 @@ class PreprocesadorHouseSales:
                 "Registros detectados": nulos_totales,
                 "% del total": round(nulos_totales / len(df_raw) * 100, 3),
                 "Decisión y justificación": (
-                    "Sin acción de imputación: las 18 columnas tienen 100 % de completitud."
+                    "Sin acción de imputación: no hay valores nulos para imputar."
                 ),
             },
             {
@@ -78,7 +78,7 @@ class PreprocesadorHouseSales:
                 "Registros detectados": duplicados,
                 "% del total": round(duplicados / len(df_raw) * 100, 3),
                 "Decisión y justificación": (
-                    "Se ejecuta drop_duplicates() por control preventivo; 0 filas afectadas."
+                    f"Se ejecuta drop_duplicates() por control preventivo; {duplicados} filas afectadas."
                 ),
             },
             {
@@ -105,7 +105,7 @@ class PreprocesadorHouseSales:
                 "Registros detectados": banos_menor_min,
                 "% del total": round(banos_menor_min / len(df_raw) * 100, 3),
                 "Decisión y justificación": (
-                    "Filtrar: una vivienda habitable requiere al menos 1 baño completo para valoración estándar."
+                    "Filtrar: una vivienda habitable requiere al menos 1 baño."
                 ),
             },
             {
