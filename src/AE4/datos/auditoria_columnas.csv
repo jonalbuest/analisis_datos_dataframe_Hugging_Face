@@ -1,0 +1,44 @@
+Columna original,Columna final,Tipo Antes,Tipo Después,Nulos Antes,Nulos Después,Origen
+bedrooms,Habitaciones,int64,int64,0,0,Original transformada / renombrada
+bathrooms,Baños,float64,float64,0,0,Original transformada / renombrada
+sqft_living,Área habitable (sqft),int64,int64,0,0,Original transformada / renombrada
+sqft_lot,Área del lote (sqft),int64,int64,0,0,Original transformada / renombrada
+waterfront,Vista al agua,int64,object,0,0,Original transformada / renombrada
+grade,Calificación,int64,int64,0,0,Original transformada / renombrada
+sqft_above,Área sobre suelo (sqft),int64,int64,0,0,Original transformada / renombrada
+sqft_basement,Área sótano (sqft),int64,int64,0,0,Original transformada / renombrada
+yr_built,Año de construcción,int64,int64,0,0,Original transformada / renombrada
+yr_renovated,Año de renovación,int64,int64,0,0,Original transformada / renombrada
+lat,Latitud,float64,float64,0,0,Original transformada / renombrada
+long,Longitud,float64,float64,0,0,Original transformada / renombrada
+sqft_living15,Área habitable vecinos (sqft),int64,int64,0,0,Original transformada / renombrada
+sqft_lot15,Área lote vecinos (sqft),int64,int64,0,0,Original transformada / renombrada
+date_year,Año de venta,int64,int64,0,0,Original transformada / renombrada
+date_month,Mes de venta,int64,int64,0,0,Original transformada / renombrada
+date_day,Día de venta,int64,int64,0,0,Original transformada / renombrada
+price,Precio (log),float64,float64,0,0,Original transformada / renombrada
+— (Nueva en AE3),Fecha de venta,—,datetime64[ns],0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Precio (USD),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Área habitable (m2),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Área del lote (m2),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Área habitable vecinos (m2),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Precio por m2 (USD),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Periodo de venta,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Antigüedad (años),—,int64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Década de construcción,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Condición de remodelación,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Categoría de tamaño,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Nivel de calificación,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Distancia Downtown Seattle (km),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Distancia Bellevue Comercial (km),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Distancia Aeropuerto SeaTac (km),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Distancia polo comercial más cercano (km),—,float64,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Anillo urbano,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Barrio / Sector,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Municipio / Subregión,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Acceso a transporte,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Parques y zonas verdes,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Nivel de comercio y servicios,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Zonas comunes y entorno,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Cuerpo de agua cercano,—,object,0,0,Incorporada en enriquecimiento (AE3)
+— (Nueva en AE3),Vista al mar o lago,—,object,0,0,Incorporada en enriquecimiento (AE3)

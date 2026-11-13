@@ -10,18 +10,18 @@ from pathlib import Path
 
 import streamlit as st
 
-st.set_page_config(page_title="Precios de vivienda · King County", layout="wide")  # primera llamada de Streamlit
+st.set_page_config(page_title="Precios de vivienda · King County", page_icon="🏠", layout="wide")  # primera llamada
 
 AQUI = Path(__file__).resolve().parent              # src/AE4
 sys.path.insert(0, str(AQUI))
 from dashboard_ae4 import DashboardAE4              # noqa: E402
 
-RUTA_DATOS = AQUI / "datos" / "reg_cat_house_sales_enriquecido.csv"
+CARPETA_DATOS = AQUI / "datos"
 
 
 @st.cache_resource(show_spinner="Cargando 21.521 viviendas…")
 def cargar() -> DashboardAE4:
-    return DashboardAE4.desde_csv(RUTA_DATOS)
+    return DashboardAE4.desde_carpeta(CARPETA_DATOS)
 
 
 cargar().render()

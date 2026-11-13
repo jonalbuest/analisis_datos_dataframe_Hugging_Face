@@ -1,0 +1,26 @@
+Variable incorporada,Tipo,Unidad,Fórmula o regla,Utilidad analítica
+Fecha de venta,datetime64[ns],Fecha ISO,"Construida desde Año, Mes y Día de venta",Análisis temporal exacto
+Precio (USD),float64,USD,exp(Precio (log)) - 1 redondeado,Variable objetivo en dólares reales
+Área habitable (m2),float64,m²,Área habitable (sqft) / 10.7639,Comparación en Sistema Internacional
+Área del lote (m2),float64,m²,Área del lote (sqft) / 10.7639,Tamaño del terreno en m²
+Área habitable vecinos (m2),float64,m²,Área habitable vecinos (sqft) / 10.7639,Contexto constructivo del vecindario
+Precio por m2 (USD),float64,USD/m²,Precio (USD) / Área habitable (m2),Métrica estándar de valoración unitaria
+Periodo de venta,object,Año-Mes,Fecha de venta en formato YYYY-MM,Evolución mensual de precios y volumen
+Antigüedad (años),int64,Años,"max(0, Año de venta - Año de construcción)",Evaluación de depreciación / edad
+Década de construcción,object,Década,(Año de construcción // 10) * 10 + 's',Comparación histórica por cohorte
+Condición de remodelación,object,Categoría,'Remodelada' si Año de renovación > 0; 'No remodelada' si 0,Prima de precio por renovación
+Categoría de tamaño,object,Tramo ordinal,"Corte de Área habitable (m2) en <130, 130–199, 200–279, ≥280",Segmentación por tamaño de vivienda
+Nivel de calificación,object,Tramo ordinal,"Agrupación de Calificación en Baja (4–6), Estándar (7), Media-Alta (8–9), Alta/Lujo (10–13)",Estabilidad estadística en extremos
+Distancia Downtown Seattle (km),float64,km,"Fórmula geodésica Haversine hacia (47.6062, -122.3321)",Cercanía al centro financiero principal
+Distancia Bellevue Comercial (km),float64,km,"Fórmula geodésica Haversine hacia (47.6101, -122.2015)",Cercanía al polo comercial/tech del Eastside
+Distancia Aeropuerto SeaTac (km),float64,km,"Fórmula geodésica Haversine hacia (47.4502, -122.3088)",Conectividad aeroportuaria regional
+Distancia polo comercial más cercano (km),float64,km,"mín(Distancia Seattle, Distancia Bellevue)",Accesibilidad comercial efectiva
+Anillo urbano,object,Tramo ordinal,"Céntrico (<10 km), Suburbano cercano (10–20 km), Periférico (>20 km)",Gradiente centro-periferia
+Barrio / Sector,object,Texto,Inferido con NVIDIA Nemotron por cuadrante (0.05° × 0.05°),Identificación legible del barrio/ciudad
+Municipio / Subregión,object,Categoría,"Inferido con NVIDIA Nemotron (Seattle, Eastside, South/North King, Islas, Foothills)",Comparación subregional
+Acceso a transporte,object,Ordinal,"Inferido con NVIDIA Nemotron: Alto, Medio, Bajo","Dotación vial, tren ligero, buses y ferris"
+Parques y zonas verdes,object,Ordinal,"Inferido con NVIDIA Nemotron: Alta, Media, Baja","Acceso a parques, reservas y frentes verdes"
+Nivel de comercio y servicios,object,Ordinal,"Inferido con NVIDIA Nemotron: Alto, Medio, Bajo",Densidad comercial del entorno
+Zonas comunes y entorno,object,Categoría,Inferido con NVIDIA Nemotron según vocación urbana/recreativa,Caracterización de equipamiento vecinal
+Cuerpo de agua cercano,object,Categoría,"Inferido con NVIDIA Nemotron: Puget Sound, Lago interior o Interior",Contexto hidrográfico del cuadrante
+Vista al mar o lago,object,Categoría,Combina 'Vista al agua' real con costa marina vs. lago interior,Diferencia prima costera marina vs. lacustre

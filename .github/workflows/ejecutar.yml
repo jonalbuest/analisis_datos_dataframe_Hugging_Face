@@ -1,4 +1,4 @@
-name: Ejecutar Transformaciones (AE1, AE2 y AE3)
+name: Ejecutar Transformaciones (AE1, AE2, AE3 y AE4)
 
 on:
   push:
@@ -88,6 +88,17 @@ jobs:
             --ExecutePreprocessor.timeout=1800 \
             transformaciones.ipynb
 
+      - name: Ejecutar visualizacion_ae4.ipynb (AE4) y probar la app
+        working-directory: src/AE4/notebooks
+        run: |
+          source ../../../.venv/bin/activate
+          jupyter nbconvert \
+            --to notebook \
+            --execute \
+            --inplace \
+            --ExecutePreprocessor.timeout=1800 \
+            visualizacion_ae4.ipynb
+
       - name: Confirmar cambios generados
         run: |
           git config user.name "github-actions[bot]"
@@ -101,12 +112,15 @@ jobs:
             src/AE2/notebooks/transformaciones.ipynb \
             src/AE3/datos \
             src/AE3/resultados \
-            src/AE3/notebooks/transformaciones.ipynb
+            src/AE3/notebooks/transformaciones.ipynb \
+            src/AE4/datos \
+            src/AE4/resultados \
+            src/AE4/notebooks/visualizacion_ae4.ipynb
 
           if git diff --cached --quiet; then
             echo "No se generaron cambios."
             exit 0
           fi
 
-          git commit -m "chore: actualizar resultados de transformaciones AE1, AE2 y AE3"
+          git commit -m "chore: actualizar resultados de AE1, AE2, AE3 y AE4"
           git push origin HEAD:main

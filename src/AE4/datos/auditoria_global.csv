@@ -1,0 +1,8 @@
+Indicador,Antes (Crudo),Después (Preparado/Enriquecido),Diferencia,Explicación
+Total de filas (registros),21613,21521,-92,Depuración justificada de 92 viviendas con habitaciones o baños inválidos (0.43 %).
+Total de columnas (variables),18,43,25,"Conservación de las 18 variables base (renombradas) + incorporación de variables derivadas, geodésicas y de NVIDIA Nemotron."
+Valores nulos totales,0,0,0,Se garantiza 0 % de valores faltantes tanto en las variables base como en las enriquecidas.
+Filas exactamente duplicadas,0,0,0,Sin duplicados antes ni después de las transformaciones y uniones.
+Columnas numéricas,18,27,9,"Vista al agua pasa a texto ('Sí'/'No'); se añaden precios en USD, áreas en m², antigüedad y distancias en km."
+Columnas categóricas / texto,0,15,15,"Se agregan categorías de tamaño, calificación, remodelación, década, periodo y atributos urbanos de Nemotron."
+Columnas de fecha (datetime),0,1,1,"Construcción de 'Fecha de venta' a partir de año, mes y día."
