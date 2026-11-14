@@ -24,10 +24,12 @@ import shutil
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from plotly.subplots import make_subplots
 
 # Reuso de AE2/AE3: se importa solo el módulo de reportes (pandas y numpy), sin cargar todo el paquete
 # (así la app no necesita openai, datasets ni python-dotenv).
@@ -185,13 +187,28 @@ class DashboardAE4:
         return destino
 
     # ---------- filtros ----------
-    def filtrar(self, tamanos, calificaciones, municipios, fechas) -> pd.DataFrame:
+    def filtrar(self, tamanos, calificaciones, municipios, fechas, extra: dict | None = None) -> pd.DataFrame:
+        """Filtros principales y, opcionalmente, los de "Más filtros" (vista, remodelación, anillo, década, precio, habitaciones)."""
         d = self.datos
         d = d[d["Categoría de tamaño"].isin(tamanos)]
         d = d[d["Nivel de calificación"].isin(calificaciones)]
         d = d[d["Municipio / Subregión"].isin(municipios)]
         ini, fin = fechas
-        return d[(d["Fecha de venta"] >= pd.Timestamp(ini)) & (d["Fecha de venta"] <= pd.Timestamp(fin))]
+        d = d[(d["Fecha de venta"] >= pd.Timestamp(ini)) & (d["Fecha de venta"] <= pd.Timestamp(fin))]
+        extra = extra or {}
+        for columna, clave in (("Vista al mar o lago", "vista"), ("Condición de remodelación", "remodelacion"),
+                               ("Anillo urbano", "anillo")):
+            if extra.get(clave) is not None:
+                d = d[d[columna].isin(extra[clave])]
+        if extra.get("decadas"):
+            decadas = sorted(self.datos["Década de construcción"].unique())
+            desde, hasta = decadas.index(extra["decadas"][0]), decadas.index(extra["decadas"][1])
+            d = d[d["Década de construcción"].isin(decadas[desde:hasta + 1])]
+        if extra.get("precio"):
+            d = d[d["Precio (USD)"].between(*extra["precio"])]
+        if extra.get("habitaciones"):
+            d = d[d["Habitaciones"].between(*extra["habitaciones"])]
+        return d
 
     # ---------- métricas ----------
     @staticmethod
@@ -280,7 +297,10 @@ class DashboardAE4:
             dec = self.resumen(d, ["Década de construcción", "Condición de remodelación"])
             dec = dec[dec["viviendas"] >= 10].pivot(index="Década de construcción", columns="Condición de remodelación",
                                                     values="mediana").dropna()
-            mayor = int((dec.get("Remodelada", pd.Series(dtype=float)) > dec.get("No remodelada", pd.Series(dtype=float))).sum())
+            if {"Remodelada", "No remodelada"} <= set(dec.columns):
+                mayor = int((dec["Remodelada"] > dec["No remodelada"]).sum())
+            else:   # con pocos datos no queda ninguna década con 10 casas en cada grupo
+                dec, mayor = dec.iloc[0:0], 0
             return (f"Solo el {pct(r.loc['Remodelada', 'viviendas'] / r['viviendas'].sum())} está remodelado. "
                     f"Mediana remodeladas {usd(r.loc['Remodelada', 'mediana'])} frente a "
                     f"{usd(r.loc['No remodelada', 'mediana'])} no remodeladas. En {mayor} de {len(dec)} décadas comparables "
@@ -362,6 +382,169 @@ class DashboardAE4:
         fig.update_xaxes(range=[-1, 1])
         return self._estilo(fig, 380)
 
+    # Variables de P1 para ver la correlación de cerca: (columna, etiqueta, ruido horizontal, ancho de grupo)
+    VARIABLES_CORRELACION = [
+        ("Área habitable (m2)", "Área habitable (m²)", 0.0, 25),
+        ("Calificación", "Calificación (grado 4 a 13)", 0.25, 1),
+        ("Baños", "Baños", 0.12, 0.5),
+        ("Antigüedad (años)", "Antigüedad (años)", 0.0, 10),
+    ]
+
+    def _titulo_r(self, d, columna, etiqueta) -> str:
+        if d[columna].nunique() < 2:
+            return f"{etiqueta} · r no calculable"
+        r = self.correlacion(d, "Precio (USD)", columna)
+        return f"{etiqueta} · r = {r:.2f}".replace(".", ",")
+
+    COLORES_UBICACION = {
+        "Anillo urbano": {ORDEN_ANILLO[0]: "#b2182b", ORDEN_ANILLO[1]: "#f4a582", ORDEN_ANILLO[2]: "#4393c3"},
+        "Municipio / Subregión": {"Seattle": "#b2182b", "Eastside (Bellevue/Kirkland/Redmond)": "#ef8a62",
+                                  "North King County": "#92c5de", "South King County": "#2166ac",
+                                  "Foothills / Este Semirrural": "#7fbc41", "Vashon / Islas": "#878787"},
+    }
+
+    def figura_p1_dispersion(self, d, n_muestra: int = 3000, color_por: str | None = None):
+        """Una nube de puntos por variable con su línea de tendencia y el r en el título.
+
+        color_por: None, "Anillo urbano" o "Municipio / Subregión" para ver cómo la ubicación explica los puntos altos.
+        """
+        variables = self.VARIABLES_CORRELACION
+        fig = make_subplots(rows=2, cols=2, horizontal_spacing=0.08, vertical_spacing=0.16,
+                            subplot_titles=[self._titulo_r(d, c, e) for c, e, _, _ in variables])
+        muestra = d.sample(min(n_muestra, len(d)), random_state=3)
+        techo = float(d["Precio (USD)"].quantile(0.99))
+        ruido = np.random.default_rng(0)
+        colores = self.COLORES_UBICACION.get(color_por, {}) if color_por else {}
+        for i, (col, etiqueta, jitter, _) in enumerate(variables):
+            fila, columna = i // 2 + 1, i % 2 + 1
+            x = muestra[col].to_numpy(dtype=float)
+            if jitter:
+                x = x + ruido.uniform(-jitter, jitter, len(x))
+            grupos = [(None, np.ones(len(muestra), dtype=bool), COLOR_PRINCIPAL)] if not colores else [
+                (g, (muestra[color_por] == g).to_numpy(), c) for g, c in colores.items()]
+            for nombre, mascara, color in grupos:
+                if not mascara.any():
+                    continue
+                fig.add_trace(go.Scatter(
+                    x=x[mascara], y=muestra["Precio (USD)"].to_numpy()[mascara], mode="markers",
+                    name=nombre, legendgroup=nombre, showlegend=bool(nombre) and i == 0,
+                    marker=dict(size=4, opacity=0.35 if colores else 0.25, color=color),
+                    customdata=muestra["Barrio / Sector"].to_numpy()[mascara],
+                    hovertemplate=f"{etiqueta}: %{{x:,.1f}}<br>Precio: USD %{{y:,.0f}}<br>%{{customdata}}<extra></extra>"),
+                    row=fila, col=columna)
+            x_min, x_max = float(d[col].min()), float(d[col].quantile(0.995))
+            if d[col].nunique() >= 2:
+                pendiente, corte = np.polyfit(d[col].astype(float), d["Precio (USD)"].astype(float), 1)
+                xs = np.linspace(x_min, x_max, 50)
+                fig.add_trace(go.Scatter(x=xs, y=pendiente * xs + corte, mode="lines", name="Tendencia (recta)",
+                                         line=dict(color="#333333" if colores else COLOR_ALERTA, width=3),
+                                         showlegend=(i == 0)), row=fila, col=columna)
+            margen = max((x_max - x_min) * 0.03, jitter * 1.5)
+            fig.update_xaxes(title_text=etiqueta, range=[x_min - margen, x_max + margen], row=fila, col=columna)
+            fig.update_yaxes(title_text="Precio (USD)" if columna == 1 else "", range=[0, techo], row=fila, col=columna)
+        fig = self._estilo(fig, 780)
+        fig.update_layout(title="Precio frente a cada característica: cada punto es una casa", margin=dict(t=80, b=90),
+                          legend=dict(orientation="h", yanchor="top", y=-0.1, x=0.5, xanchor="center", itemsizing="constant"))
+        return fig
+
+    def figura_p1_lineas(self, d, n_minimo: int = 20):
+        """Mediana del precio por tramos de cada variable: muestra la tendencia sin el ruido de los puntos."""
+        variables = self.VARIABLES_CORRELACION
+        fig = make_subplots(rows=2, cols=2, horizontal_spacing=0.08, vertical_spacing=0.16,
+                            subplot_titles=[self._titulo_r(d, c, e) for c, e, _, _ in variables])
+        for i, (col, etiqueta, _, ancho) in enumerate(variables):
+            fila, columna = i // 2 + 1, i % 2 + 1
+            tramo = (np.floor(d[col] / ancho) * ancho + (ancho / 2 if ancho > 1 else 0)).rename("Tramo")
+            r = d.groupby(tramo)["Precio (USD)"].agg(["median", "size"]).reset_index()
+            r = r[r["size"] >= n_minimo]
+            fig.add_trace(go.Scatter(
+                x=r["Tramo"], y=r["median"], mode="lines+markers", showlegend=False, customdata=r["size"],
+                line=dict(color=COLOR_PRINCIPAL, width=3), marker=dict(size=7),
+                hovertemplate=f"{etiqueta}: %{{x:,.1f}}<br>Mediana: USD %{{y:,.0f}}<br>Viviendas: %{{customdata:,.0f}}<extra></extra>"),
+                row=fila, col=columna)
+            fig.update_xaxes(title_text=etiqueta, row=fila, col=columna)
+            fig.update_yaxes(title_text="Mediana del precio (USD)" if columna == 1 else "", rangemode="tozero",
+                             row=fila, col=columna)
+        fig = self._estilo(fig, 700)
+        fig.update_layout(title=f"Precio típico (mediana) a medida que sube cada característica (grupos con al menos {n_minimo} casas)",
+                          margin=dict(t=90))
+        return fig
+
+    # P1 · casas atípicas (caras para su número de baños) y su ubicación
+    def atipicas(self, d: pd.DataFrame) -> pd.DataFrame:
+        """Marca como atípica la vivienda cuyo precio supera Q3 + 1,5 × RIC de su grupo de baños (regla de Tukey)."""
+        grupo = d.groupby("Grupo de baños")["Precio (USD)"]
+        q1, q3 = grupo.transform(lambda s: s.quantile(0.25)), grupo.transform(lambda s: s.quantile(0.75))
+        return d.assign(**{"Umbral atípico (USD)": q3 + 1.5 * (q3 - q1)}).assign(
+            **{"Atípica": lambda x: x["Precio (USD)"] > x["Umbral atípico (USD)"]})
+
+    def comparacion_atipicas(self, d: pd.DataFrame) -> pd.DataFrame:
+        """Porcentajes y medianas de ubicación y calidad: casas atípicas frente al resto."""
+        a = self.atipicas(d)
+        filas = []
+        for nombre, sub in (("Atípicas (caras para sus baños)", a[a["Atípica"]]), ("Resto de casas", a[~a["Atípica"]])):
+            if sub.empty:
+                continue
+            filas.append({
+                "Grupo": nombre,
+                "Viviendas": len(sub),
+                "% a menos de 10 km de un centro comercial": (sub["Anillo urbano"] == ORDEN_ANILLO[0]).mean() * 100,
+                "% en Seattle o Eastside": sub["Municipio / Subregión"].isin(
+                    ["Seattle", "Eastside (Bellevue/Kirkland/Redmond)"]).mean() * 100,
+                "% con vista al agua": (sub["Vista al mar o lago"] != ORDEN_VISTA[0]).mean() * 100,
+                "% con calificación 8 o más": sub["Bien calificada"].mean() * 100,
+                "Mediana distancia al centro comercial (km)": sub["Distancia polo comercial más cercano (km)"].median()
+                if "Distancia polo comercial más cercano (km)" in sub else np.nan,
+                "Mediana área (m²)": sub["Área habitable (m2)"].median(),
+                "Mediana USD/m²": sub["Precio por m2 (USD)"].median(),
+            })
+        return pd.DataFrame(filas)
+
+    def figura_p1_atipicas(self, d):
+        c = self.comparacion_atipicas(d)
+        indicadores = ["% a menos de 10 km de un centro comercial", "% en Seattle o Eastside",
+                       "% con calificación 8 o más", "% con vista al agua"]
+        largo = c.melt(id_vars="Grupo", value_vars=indicadores, var_name="Indicador", value_name="Porcentaje")
+        cortos = {indicadores[0]: "A menos de 10 km<br>de un centro comercial", indicadores[1]: "En Seattle<br>o Eastside",
+                  indicadores[2]: "Calificación<br>8 o más", indicadores[3]: "Con vista<br>al agua"}
+        largo["Indicador"] = largo["Indicador"].map(cortos)
+        fig = px.bar(largo, x="Indicador", y="Porcentaje", color="Grupo", barmode="group", text="Porcentaje",
+                     color_discrete_map={"Atípicas (caras para sus baños)": COLOR_ALERTA, "Resto de casas": "#9ecae1"},
+                     title="¿Dónde están las casas caras para su número de baños?",
+                     labels={"Porcentaje": "Porcentaje de viviendas (%)", "Indicador": ""})
+        fig.update_traces(texttemplate="%{text:.0f} %", textposition="outside", cliponaxis=False)
+        fig.update_yaxes(range=[0, 105])
+        return self._estilo(fig, 420)
+
+    def figura_p1_mapa_atipicas(self, d):
+        a = self.atipicas(d)
+        resto = a[~a["Atípica"]]
+        base = pd.concat([resto.sample(min(4000, len(resto)), random_state=4), a[a["Atípica"]]])
+        base = base.assign(Tipo=np.where(base["Atípica"], "Atípica (cara para sus baños)", "Resto (muestra)"))
+        return self.mapa(base, "Tipo", "Ubicación de las casas atípicas frente al resto",
+                         {"Resto (muestra)": "#c6dbef", "Atípica (cara para sus baños)": COLOR_ALERTA},
+                         ["Resto (muestra)", "Atípica (cara para sus baños)"])
+
+    def respuesta_atipicas(self, d) -> str:
+        a = self.atipicas(d)
+        at = a[a["Atípica"]]
+        if at.empty:
+            return "Con los filtros actuales no hay casas atípicas por precio."
+        c = self.comparacion_atipicas(d).set_index("Grupo")
+        texto = (f"{numero(len(at))} casas ({pct(len(at) / len(a))}) cuestan mucho más que las demás con su mismo número de "
+                 f"baños. El {c.iloc[0]['% a menos de 10 km de un centro comercial']:.0f} % de ellas está a menos de 10 km de "
+                 f"un centro comercial")
+        if len(c) > 1:
+            texto += f", frente al {c.iloc[1]['% a menos de 10 km de un centro comercial']:.0f} % del resto"
+        uno = at[at["Grupo de baños"] == ORDEN_BANOS[0]]
+        if len(uno) >= 5:
+            barrio = uno["Barrio / Sector"].value_counts()
+            umbral = uno["Umbral atípico (USD)"].iloc[0]
+            texto += (f". Por ejemplo, {numero(len(uno))} casas de 1 baño cuestan más de {usd(umbral)}; la mayoría está en "
+                      f"{uno['Municipio / Subregión'].value_counts().index[0]} (barrio más frecuente: {barrio.index[0]}, "
+                      f"{numero(barrio.iloc[0])} casas)")
+        return texto + "."
+
     # P2
     def figura_p2_mediana(self, d):
         r = self.resumen(d, "Nivel de calificación", ORDEN_CALIFICACION)
@@ -388,6 +571,31 @@ class DashboardAE4:
                          f"Dónde están las viviendas bien calificadas (8 o más): {numero(len(bien))}",
                          COLORES_CALIFICACION, ORDEN_CALIFICACION)
 
+    def figura_p2_mapa_baja(self, d):
+        baja = d[~d["Bien calificada"]]
+        return self.mapa(baja, "Nivel de calificación",
+                         f"Dónde están las viviendas con calificación menor a 8: {numero(len(baja))}",
+                         {ORDEN_CALIFICACION[0]: "#a63603", ORDEN_CALIFICACION[1]: "#fd8d3c"},
+                         [ORDEN_CALIFICACION[1], ORDEN_CALIFICACION[0]])   # Baja se dibuja encima para que se vea
+
+    def figura_p2_subregion(self, d):
+        """Cómo se reparten por subregión las casas de calificación alta y baja (porcentaje de cada grupo)."""
+        t = d.assign(Grupo=np.where(d["Bien calificada"], "Calificación 8 o más", "Calificación menor a 8"))
+        r = (t.groupby(["Grupo", "Municipio / Subregión"]).size() / t.groupby("Grupo").size()).mul(100)
+        r = r.rename("Porcentaje").reset_index()
+        orden = (r[r["Grupo"] == "Calificación 8 o más"].sort_values("Porcentaje", ascending=False)["Municipio / Subregión"].tolist()
+                 or sorted(r["Municipio / Subregión"].unique()))
+        r["Municipio / Subregión"] = r["Municipio / Subregión"].str.replace(" (", "<br>(", regex=False)
+        orden = [o.replace(" (", "<br>(") for o in orden]
+        fig = px.bar(r, x="Municipio / Subregión", y="Porcentaje", color="Grupo", barmode="group", text="Porcentaje",
+                     category_orders={"Municipio / Subregión": orden,
+                                      "Grupo": ["Calificación menor a 8", "Calificación 8 o más"]},
+                     color_discrete_map={"Calificación menor a 8": "#fd8d3c", "Calificación 8 o más": "#08306b"},
+                     title="En qué subregión está cada grupo (porcentaje de las casas del grupo)",
+                     labels={"Porcentaje": "Porcentaje del grupo (%)", "Municipio / Subregión": ""})
+        fig.update_traces(texttemplate="%{text:.0f} %", textposition="outside", cliponaxis=False)
+        return self._estilo(fig, 420)
+
     # P3
     def figura_p3_conteo(self, d):
         con = int((d["Vista al mar o lago"] != ORDEN_VISTA[0]).sum())
@@ -408,22 +616,134 @@ class DashboardAE4:
                          f"Dónde están las viviendas con vista al agua: {numero(len(con_vista))}",
                          COLORES_VISTA, ORDEN_VISTA)
 
+    @staticmethod
+    def _con_vista(d: pd.DataFrame) -> pd.Series:
+        return pd.Series(np.where(d["Vista al mar o lago"] != ORDEN_VISTA[0], "Con vista al agua", "Sin vista"),
+                         index=d.index, name="Vista")
+
+    def figura_p3_caja(self, d):
+        fig = px.box(d, x="Vista al mar o lago", y="Precio (USD)", color="Vista al mar o lago", points="outliers",
+                     log_y=True, color_discrete_map=COLORES_VISTA, category_orders={"Vista al mar o lago": ORDEN_VISTA},
+                     title="Cómo se reparten los precios según la vista (escala logarítmica)",
+                     labels={"Vista al mar o lago": "", "Precio (USD)": "Precio (USD, escala logarítmica)"})
+        marcas = [100_000, 200_000, 500_000, 1_000_000, 2_000_000, 5_000_000]
+        fig.update_yaxes(tickvals=marcas, ticktext=[usd(v) for v in marcas], minor=dict(showgrid=False))
+        fig.update_layout(showlegend=False)
+        return self._estilo(fig, 420)
+
+    def figura_p3_por_tamano(self, d):
+        r = self.resumen(d.assign(Vista=self._con_vista(d)), ["Categoría de tamaño", "Vista"])
+        fig = px.bar(r, x="Categoría de tamaño", y="mediana", color="Vista", barmode="group", text="mediana",
+                     custom_data=["viviendas"], category_orders={"Categoría de tamaño": ORDEN_TAMANOS,
+                                                                 "Vista": ["Sin vista", "Con vista al agua"]},
+                     color_discrete_map={"Sin vista": "#bdbdbd", "Con vista al agua": COLOR_ALERTA},
+                     title="Misma categoría de tamaño, con y sin vista al agua",
+                     labels={"mediana": "Mediana del precio (USD)", "Categoría de tamaño": ""})
+        fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside", cliponaxis=False,
+                          hovertemplate="%{x}<br>Mediana: USD %{y:,.0f}<br>Viviendas: %{customdata[0]:,.0f}<extra></extra>")
+        return self._estilo(fig, 420)
+
+    def figura_p3_por_subregion(self, d, n_minimo: int = 5):
+        t = d.assign(Vista=self._con_vista(d))
+        r = self.resumen(t, ["Municipio / Subregión", "Vista"])
+        validas = r[(r["Vista"] == "Con vista al agua") & (r["viviendas"] >= n_minimo)]["Municipio / Subregión"]
+        r = r[r["Municipio / Subregión"].isin(validas)].copy()
+        r["Municipio / Subregión"] = r["Municipio / Subregión"].str.replace(" (", "<br>(", regex=False)
+        fig = px.bar(r, x="Municipio / Subregión", y="mediana", color="Vista", barmode="group", text="mediana",
+                     custom_data=["viviendas"], category_orders={"Vista": ["Sin vista", "Con vista al agua"]},
+                     color_discrete_map={"Sin vista": "#bdbdbd", "Con vista al agua": COLOR_ALERTA},
+                     title=f"Misma subregión, con y sin vista al agua (subregiones con al menos {n_minimo} casas con vista)",
+                     labels={"mediana": "Mediana del precio (USD)", "Municipio / Subregión": ""})
+        fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside", cliponaxis=False,
+                          hovertemplate="%{x}<br>Mediana: USD %{y:,.0f}<br>Viviendas: %{customdata[0]:,.0f}<extra></extra>")
+        return self._estilo(fig, 420)
+
+    def perfil_p3(self, d) -> pd.DataFrame:
+        """Cómo son las casas con vista frente a las demás (ayuda a entender de dónde sale la prima)."""
+        filas = []
+        for nombre, sub in d.groupby(self._con_vista(d)):
+            filas.append({
+                "Grupo": nombre, "Viviendas": len(sub),
+                "Mediana precio (USD)": sub["Precio (USD)"].median(),
+                "Mediana USD/m²": sub["Precio por m2 (USD)"].median(),
+                "Mediana área (m²)": sub["Área habitable (m2)"].median(),
+                "% calificación 8 o más": sub["Bien calificada"].mean() * 100,
+                "% a menos de 10 km de un centro comercial": (sub["Anillo urbano"] == ORDEN_ANILLO[0]).mean() * 100,
+                "Mediana antigüedad (años)": sub["Antigüedad (años)"].median(),
+            })
+        return pd.DataFrame(filas).sort_values("Grupo")
+
+    def prima_por_tamano(self, d, n_minimo: int = 5) -> pd.DataFrame:
+        r = self.resumen(d.assign(Vista=self._con_vista(d)), ["Categoría de tamaño", "Vista"])
+        t = r.pivot(index="Categoría de tamaño", columns="Vista", values="mediana")
+        n = r.pivot(index="Categoría de tamaño", columns="Vista", values="viviendas")
+        if not {"Con vista al agua", "Sin vista"} <= set(t.columns):
+            return pd.DataFrame()
+        t = t[n["Con vista al agua"].fillna(0) >= n_minimo].dropna()
+        return (t["Con vista al agua"] / t["Sin vista"]).rename("Veces").reset_index()
+
     # P4
     def figura_p4_subregion(self, d):
         r = self.resumen(d, "Municipio / Subregión").sort_values("mediana_m2", ascending=False)
         return self.barras(r, "Municipio / Subregión", "mediana_m2", "Precio por m² en cada subregión (de mayor a menor)",
                            "Mediana del precio (USD/m²)", horizontal=True, orden_desc=True)
 
-    def figura_p4_calor(self, d):
+    MEDIDAS_CALOR = {
+        "Precio por m²": ("Precio por m2 (USD)", "median", "USD por m²", "Blues"),
+        "Precio típico de la casa": ("Precio (USD)", "median", "USD", "Purples"),
+        "Número de casas": ("Precio (USD)", "size", "Casas", "Greens"),
+    }
+    N_MINIMO_CASILLA = 20
+
+    def tabla_calor(self, d) -> pd.DataFrame:
+        """Por subregión y tamaño: casas, mediana del precio y mediana por m²."""
+        return (d.groupby(["Municipio / Subregión", "Categoría de tamaño"])
+                .agg(casas=("Precio (USD)", "size"), precio=("Precio (USD)", "median"),
+                     m2=("Precio por m2 (USD)", "median")).reset_index())
+
+    def figura_p4_calor(self, d, medida: str = "Precio por m²"):
+        """Mapa de calor subregión × tamaño. medida: 'Precio por m²', 'Precio típico de la casa' o 'Número de casas'."""
+        columna, funcion, unidad, escala = self.MEDIDAS_CALOR[medida]
+        t = self.tabla_calor(d)
+        valor = {"Precio por m²": "m2", "Precio típico de la casa": "precio", "Número de casas": "casas"}[medida]
         orden_filas = self.resumen(d, "Municipio / Subregión").sort_values("mediana_m2", ascending=False)["Municipio / Subregión"]
-        pivote = (d.pivot_table(index="Municipio / Subregión", columns="Categoría de tamaño",
-                                values="Precio por m2 (USD)", aggfunc="median")
-                  .reindex(columns=[c for c in ORDEN_TAMANOS if c in set(d["Categoría de tamaño"])])
-                  .reindex(orden_filas))
-        fig = px.imshow(pivote.round(0), text_auto=",.0f", aspect="auto", color_continuous_scale="Blues",
-                        title="Precio por m² (USD) según subregión (filas) y tamaño de casa (columnas)",
-                        labels={"x": "Tamaño de la casa", "y": "Subregión", "color": "USD por m²"})
-        return self._estilo(fig, 460)
+        columnas = [c for c in ORDEN_TAMANOS if c in set(d["Categoría de tamaño"])]
+
+        def tabla(campo):
+            return t.pivot(index="Municipio / Subregión", columns="Categoría de tamaño", values=campo) \
+                    .reindex(index=orden_filas, columns=columnas)
+
+        z, casas, precio, m2 = tabla(valor), tabla("casas"), tabla("precio"), tabla("m2")
+        pocas = casas < self.N_MINIMO_CASILLA
+        if valor != "casas":
+            z = z.mask(pocas)          # con menos de 20 casas el valor no es confiable: casilla en gris
+        texto = z.apply(lambda c: c.map(lambda v: "" if pd.isna(v) else (f"{v:,.0f}".replace(",", "."))))
+        if valor != "casas":
+            texto = texto.where(~pocas, "pocas casas")
+        etiquetas_x = [c.split(". ", 1)[-1].replace(" (", "<br>(") for c in columnas]
+        etiquetas_y = [f.replace(" (", "<br>(") for f in z.index]
+        fig = go.Figure(go.Heatmap(
+            z=z.values, x=etiquetas_x, y=etiquetas_y, colorscale=escala, text=texto.values, texttemplate="%{text}",
+            colorbar=dict(title=unidad), hoverongaps=False,
+            customdata=np.dstack([casas.values, precio.values, m2.values]),
+            hovertemplate=("<b>%{y}</b> · casa %{x}<br>Casas: %{customdata[0]:,.0f}<br>"
+                           "Precio típico: USD %{customdata[1]:,.0f}<br>Precio por m²: USD %{customdata[2]:,.0f}<extra></extra>")))
+        fig.update_layout(plot_bgcolor="#eeeeee", xaxis_title="Tamaño de la casa", yaxis_title="",
+                          title=f"{medida} según subregión (filas) y tamaño de casa (columnas)")
+        fig.update_yaxes(autorange="reversed")
+        return self._estilo(fig, 480)
+
+    def explicar_calor(self, d) -> str:
+        t = self.tabla_calor(d)
+        t = t[t["casas"] >= self.N_MINIMO_CASILLA]
+        if len(t) < 2:
+            return ""
+        caro, barato = t.loc[t["m2"].idxmax()], t.loc[t["m2"].idxmin()]
+        corto = lambda c: c.split(". ", 1)[-1].split(" (")[0].lower()
+        veces = f"{caro['m2'] / barato['m2']:.1f}".replace(".", ",")
+        return (f"El metro cuadrado más caro está en una casa {corto(caro['Categoría de tamaño'])} de {caro['Municipio / Subregión']} "
+                f"({usd(caro['m2'])} por m²) y el más barato en una casa {corto(barato['Categoría de tamaño'])} de "
+                f"{barato['Municipio / Subregión']} ({usd(barato['m2'])} por m²): {veces} veces menos.")
 
     def figura_p4_mapa_m2(self, d):
         rango = tuple(d["Precio por m2 (USD)"].quantile([0.05, 0.95]).round(0))
@@ -435,23 +755,76 @@ class DashboardAE4:
         return self.barras(r, "Anillo urbano", "mediana", "Precio típico según distancia al polo comercial más cercano",
                            "Mediana del precio (USD)")
 
-    def figura_p4_entorno(self, d):
+    ATRIBUTOS_ENTORNO = {"Acceso a transporte": "¿Qué tan fácil es llegar en transporte?",
+                         "Nivel de comercio y servicios": "¿Cuántos comercios y servicios hay cerca?",
+                         "Parques y zonas verdes": "¿Cuántos parques hay cerca?"}
+
+    def resumen_entorno(self, d) -> pd.DataFrame:
+        """Por atributo y nivel: viviendas, % del total, mediana y lo que explica la diferencia (zona, tamaño, calificación)."""
         filas = []
-        for atributo in ["Acceso a transporte", "Nivel de comercio y servicios", "Parques y zonas verdes"]:
-            r = self.resumen(d, atributo)
-            filas.append(r.rename(columns={atributo: "Nivel"}).assign(Atributo=atributo))
-        t = pd.concat(filas, ignore_index=True)
-        t["Nivel"] = pd.Categorical(t["Nivel"], categories=[n for n in ORDEN_NIVEL if n in set(t["Nivel"])], ordered=True)
-        t = t.sort_values(["Atributo", "Nivel"])
-        fig = px.bar(t, x="Nivel", y="mediana", facet_col="Atributo", text="mediana", custom_data=["viviendas"],
-                     color_discrete_sequence=[COLOR_PRINCIPAL],
-                     title="Precio típico según el entorno inferido (transporte, comercio y parques)",
-                     labels={"mediana": "Mediana (USD)", "Nivel": ""})
-        fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside", cliponaxis=False,
-                          hovertemplate="%{x}<br>Mediana: USD %{y:,.0f}<br>Viviendas: %{customdata[0]:,.0f}<extra></extra>")
-        fig.update_xaxes(matches=None)
-        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-        return self._estilo(fig, 400)
+        for atributo in self.ATRIBUTOS_ENTORNO:
+            for nivel, sub in d.groupby(atributo):
+                zonas = sub["Municipio / Subregión"].value_counts(normalize=True)
+                filas.append({"Atributo": atributo, "Nivel": nivel, "Viviendas": len(sub),
+                              "% de las casas": len(sub) / len(d) * 100, "Mediana (USD)": sub["Precio (USD)"].median(),
+                              "Subregión principal": zonas.index[0], "% en esa subregión": zonas.iloc[0] * 100,
+                              "Mediana área (m²)": sub["Área habitable (m2)"].median(),
+                              "% calificación 8 o más": sub["Bien calificada"].mean() * 100})
+        t = pd.DataFrame(filas)
+        t["orden"] = t["Nivel"].map({n: i for i, n in enumerate(ORDEN_NIVEL)})
+        return t.sort_values(["Atributo", "orden"]).drop(columns="orden")
+
+    def figura_p4_entorno(self, d):
+        t = self.resumen_entorno(d)
+        general = float(d["Precio (USD)"].median())
+        t["Etiqueta"] = t.apply(lambda f: f"<b>{f['Nivel']}</b><br>{numero(f['Viviendas'])} casas<br>({f['% de las casas']:.0f} %)",
+                                axis=1)
+        t["Comparación"] = np.where(t["Mediana (USD)"] >= general, "Por encima de la mediana general",
+                                    "Por debajo de la mediana general")
+        atributos = list(self.ATRIBUTOS_ENTORNO)
+        fig = make_subplots(rows=1, cols=3, shared_yaxes=True, horizontal_spacing=0.04,
+                            subplot_titles=[f"{a}<br><sup>{p}</sup>" for a, p in self.ATRIBUTOS_ENTORNO.items()])
+        colores = {"Por encima de la mediana general": COLOR_PRINCIPAL, "Por debajo de la mediana general": "#fdae6b"}
+        vistos = set()
+        for j, atributo in enumerate(atributos, start=1):
+            sub = t[t["Atributo"] == atributo]
+            for comp, grupo in sub.groupby("Comparación", sort=False):
+                fig.add_trace(go.Bar(
+                    x=grupo["Etiqueta"], y=grupo["Mediana (USD)"], name=comp, marker_color=colores[comp],
+                    legendgroup=comp, showlegend=comp not in vistos, text=grupo["Mediana (USD)"],
+                    texttemplate="USD %{text:,.0f}", textposition="outside", cliponaxis=False,
+                    customdata=grupo[["Subregión principal", "% en esa subregión", "Mediana área (m²)", "% calificación 8 o más"]],
+                    hovertemplate=("%{x}<br>Mediana: USD %{y:,.0f}<br>Subregión principal: %{customdata[0]} "
+                                   "(%{customdata[1]:.0f} %)<br>Área típica: %{customdata[2]:.0f} m²<br>"
+                                   "Calificación 8 o más: %{customdata[3]:.0f} %<extra></extra>")), row=1, col=j)
+                vistos.add(comp)
+            fig.update_xaxes(categoryorder="array", categoryarray=sub["Etiqueta"].tolist(), row=1, col=j)
+        fig.add_hline(y=general, line_dash="dot", line_color="#555555")
+        fig.add_annotation(xref="paper", yref="y", x=1, y=general, xanchor="right", yshift=-12, showarrow=False,
+                           text=f"Mediana general: {usd(general)}", font=dict(size=11, color="#555555"))
+        fig.update_xaxes(tickangle=0)
+        fig.update_yaxes(title_text="Mediana del precio (USD)", row=1, col=1)
+        fig = self._estilo(fig, 540)
+        fig.update_layout(title="¿Las casas con más transporte, comercio y parques cerca cuestan más?",
+                          margin=dict(t=110, b=40),
+                          legend=dict(orientation="h", yanchor="top", y=-0.22, x=0.5, xanchor="center"))
+        return fig
+
+    def explicar_entorno(self, d) -> list[str]:
+        """Una frase por atributo: qué nivel es el más caro y qué tiene esa zona que lo explica."""
+        t = self.resumen_entorno(d)
+        frases = []
+        for atributo in self.ATRIBUTOS_ENTORNO:
+            sub = t[t["Atributo"] == atributo]
+            if len(sub) < 2:
+                continue
+            caro, barato = sub.loc[sub["Mediana (USD)"].idxmax()], sub.loc[sub["Mediana (USD)"].idxmin()]
+            frases.append(
+                f"**{atributo}:** el nivel más caro es *{caro['Nivel']}* ({usd(caro['Mediana (USD)'])}) y el más barato "
+                f"*{barato['Nivel']}* ({usd(barato['Mediana (USD)'])}). Las casas de nivel *{caro['Nivel']}* están sobre todo "
+                f"en {caro['Subregión principal']} ({caro['% en esa subregión']:.0f} %), miden {caro['Mediana área (m²)']:.0f} m² "
+                f"y el {caro['% calificación 8 o más']:.0f} % tiene calificación 8 o más.")
+        return frases
 
     def tabla_p4_barrios(self, d, n_top: int) -> pd.DataFrame:
         b = self.resumen(d, ["Barrio / Sector", "Municipio / Subregión"]).query("viviendas >= @N_MINIMO_BARRIO")
@@ -544,7 +917,38 @@ class DashboardAE4:
         self._grafico(self.figura_p1_correlacion(d), c4)
         st.markdown("**Cómo leerlo:** cada barra es un grupo de casas; entre más larga, más cuesta la casa típica de ese grupo. "
                     "La correlación va de -1 a 1: cerca de 1, el precio y esa característica suben juntos; cerca de 0, no tienen que ver.")
-        st.caption("Limitación: la correlación muestra asociación, no causa. Una casa grande también suele tener más baños y mejor calificación.")
+        st.markdown("#### La correlación vista de cerca: área habitable, calificación, baños y antigüedad")
+        opciones = {"Anillo urbano (distancia al centro comercial)": "Anillo urbano",
+                    "Subregión": "Municipio / Subregión", "Sin color": None}
+        eleccion = st.radio("Colorear los puntos por:", list(opciones), horizontal=True, key="p1_color")
+        self._grafico(self.figura_p1_dispersion(d, color_por=opciones[eleccion]))
+        st.markdown("**Cómo leerlo:** cada punto es una casa. Si los puntos forman una nube que **sube** de izquierda a derecha "
+                    "y se pega a la línea naranja, la r es alta (área habitable). Si la nube es **plana y regada**, la r es "
+                    "cercana a 0 (antigüedad). La línea naranja es la tendencia recta calculada con todas las casas.")
+        self._grafico(self.figura_p1_lineas(d))
+        st.markdown("**Cómo leerlo:** cada punto de la línea es el precio típico de un grupo de casas (por ejemplo, las de "
+                    "150 a 175 m²). Una línea que sube con fuerza indica una r alta. **Ojo con la antigüedad:** su línea tiene "
+                    "forma de U (las casas nuevas y las muy antiguas valen más; las de 40 a 80 años, menos). Por eso su r es "
+                    "casi 0: r solo mide relaciones en línea recta, y una U no lo es. Una r cercana a 0 no siempre significa que "
+                    "no haya ningún patrón.")
+
+        st.markdown("#### ¿Por qué hay casas caras con pocos baños? La ubicación")
+        st.info(_esc(self.respuesta_atipicas(d)))
+        c1, c2 = st.columns(2)
+        self._grafico(self.figura_p1_atipicas(d), c1)
+        self._grafico(self.figura_p1_mapa_atipicas(d), c2)
+        comparacion = self.comparacion_atipicas(d)
+        st.dataframe(comparacion, hide_index=True, width="stretch",
+                     column_config={c: st.column_config.NumberColumn(c, format="%.1f") for c in comparacion.columns
+                                    if c not in ("Grupo", "Viviendas")})
+        st.markdown("**Cómo leerlo:** una casa es *atípica* si su precio está muy por encima del de las demás casas con el mismo "
+                    "número de baños (más de Q3 + 1,5 × RIC, la regla de Tukey). Casi todas están cerca de un centro comercial, en "
+                    "Seattle o el Eastside. Es decir: una casa con un solo baño puede ser cara porque está muy bien ubicada.")
+        st.caption("Limitación: las atípicas también son, en general, más grandes y mejor calificadas; la ubicación pesa mucho, "
+                   "pero no es la única razón. Subregión y anillo urbano vienen de las coordenadas y de NVIDIA Nemotron.")
+        st.caption("Limitación: la correlación muestra asociación, no causa. Una casa grande también suele tener más baños y mejor "
+                   "calificación. En los puntos se muestra una muestra de 3.000 casas, con un pequeño desplazamiento horizontal en "
+                   "calificación y baños para que no se tapen; el eje de precio llega hasta el percentil 99.")
         self._tabla(d, "Categoría de tamaño", "por tamaño", ORDEN_TAMANOS)
 
     def tab_p2(self, d) -> None:
@@ -553,9 +957,22 @@ class DashboardAE4:
         self._grafico(self.figura_p2_mediana(d), c1)
         self._grafico(self.figura_p2_conteo(d), c2)
         self._grafico(self.figura_p2_grado(d))
-        self._grafico(self.figura_p2_mapa(d))
+        st.markdown("#### Dónde están las casas según su calificación")
+        c3, c4 = st.columns(2)
+        self._grafico(self.figura_p2_mapa(d), c3)
+        self._grafico(self.figura_p2_mapa_baja(d), c4)
+        self._grafico(self.figura_p2_subregion(d))
+        texto = ""
+        if d["Bien calificada"].any() and (~d["Bien calificada"]).any():
+            alta = d[d["Bien calificada"]]["Municipio / Subregión"].value_counts(normalize=True)
+            baja = d[~d["Bien calificada"]]["Municipio / Subregión"].value_counts(normalize=True)
+            texto = (f" Con la selección actual, la subregión con más casas de calificación 8 o más es {alta.index[0]} "
+                     f"({alta.iloc[0] * 100:.0f} % del grupo); la de más casas con calificación menor a 8 es "
+                     f"{baja.index[0]} ({baja.iloc[0] * 100:.0f} % del grupo).")
         st.markdown("**Cómo leerlo:** el precio típico sube en cada grado, pero los grados altos tienen pocas casas. "
-                    "Cada punto del mapa es una casa con calificación 8 o más (más oscuro = mejor calificación).")
+                    "El mapa de la izquierda muestra las casas con calificación 8 o más (azul oscuro = mejor calificación) y el de "
+                    "la derecha las de calificación menor a 8 (naranja oscuro = Baja). Las barras comparan en qué subregión está "
+                    "cada grupo." + texto)
         st.caption("Limitación: la calificación es una nota del condado; se mezcla con tamaño y ubicación.")
         self._tabla(d, "Nivel de calificación", "por nivel de calificación", ORDEN_CALIFICACION)
 
@@ -565,9 +982,35 @@ class DashboardAE4:
         self._grafico(self.figura_p3_conteo(d), c1)
         self._grafico(self.figura_p3_mediana(d), c2)
         self._grafico(self.figura_p3_m2(d), c3)
-        self._grafico(self.figura_p3_mapa(d))
         st.markdown("**Cómo leerlo:** la primera barra muestra que las casas con vista al agua son muy pocas; por eso no cambian "
-                    "el precio de todo el mercado. El mapa muestra dónde están (azul: lago; naranja: mar).")
+                    "el precio de todo el mercado. Las otras dos muestran cuánto más cuestan, en total y por metro cuadrado.")
+
+        if (d["Vista al mar o lago"] == ORDEN_VISTA[0]).all():
+            st.warning("Con los filtros actuales no hay casas con vista al agua.")
+        else:
+            st.markdown("#### ¿La vista al agua se paga por sí sola? Comparar casas parecidas")
+            prima = self.prima_por_tamano(d)
+            if not prima.empty:
+                minimo, maximo = (f"{v:.1f}".replace(".", ",") for v in (prima["Veces"].min(), prima["Veces"].max()))
+                st.info(_esc(f"Comparando casas del mismo tamaño, las que tienen vista al agua cuestan entre "
+                             f"{minimo} y {maximo} veces lo que cuestan las que no la tienen."))
+            c4, c5 = st.columns(2)
+            self._grafico(self.figura_p3_por_tamano(d), c4)
+            self._grafico(self.figura_p3_por_subregion(d), c5)
+            st.markdown("**Cómo leerlo:** cada par de barras compara casas parecidas (del mismo tamaño o de la misma subregión). "
+                        "Si la barra naranja sigue siendo más alta, la diferencia no se explica solo por el tamaño o la zona.")
+            self._grafico(self.figura_p3_caja(d))
+            st.markdown("**Cómo leer la caja:** la línea del medio es la mediana; la caja va del 25 % al 75 % de los precios; los "
+                        "puntos sueltos son casas atípicas. La escala es logarítmica para poder ver juntos precios de USD 100.000 "
+                        "y de USD 7 millones. Las cajas con vista están más arriba y son más anchas: su precio varía mucho más.")
+            perfil = self.perfil_p3(d)
+            st.markdown("**Perfil de las casas con vista frente a las demás**")
+            st.dataframe(perfil, hide_index=True, width="stretch",
+                         column_config={c: st.column_config.NumberColumn(c, format="%.1f") for c in perfil.columns
+                                        if c not in ("Grupo", "Viviendas")})
+            st.caption("Las casas con vista también son más grandes y mejor calificadas: parte de su precio viene de eso.")
+        self._grafico(self.figura_p3_mapa(d))
+        st.markdown("**Cómo leer el mapa:** cada punto es una casa con vista (azul: lago o río; naranja: mar).")
         st.caption("Limitación: la clasificación mar/lago la hizo NVIDIA Nemotron y no está validada; hay casos dudosos "
                    "(por ejemplo, viviendas marcadas como mar cuyo cuerpo de agua cercano es un lago). Con tan pocas casas, "
                    "unas pocas ventas cambian el resultado.")
@@ -578,15 +1021,35 @@ class DashboardAE4:
         c1, c2 = st.columns(2)
         self._grafico(self.figura_p4_subregion(d), c1)
         self._grafico(self.figura_p4_anillo(d), c2)
-        self._grafico(self.figura_p4_calor(d))
-        st.markdown("**Cómo leer el cuadro:** cada casilla cruza una subregión (fila) con un tamaño de casa (columna). Entre más "
-                    "oscura, más caro el m². En casi todas las subregiones el m² cuesta más en casas pequeñas que en grandes.")
+        st.markdown("#### Cruce de zona y tamaño (mapa de calor)")
+        medida = st.radio("Qué mostrar en cada casilla:", list(self.MEDIDAS_CALOR), horizontal=True, key="p4_calor")
+        self._grafico(self.figura_p4_calor(d, medida))
+        st.markdown("**Cómo leer el cuadro:** busca la fila de la zona y la columna del tamaño de la casa; el número de la "
+                    "casilla es el valor elegido arriba. Entre más oscura la casilla, más alto el valor. Las casillas grises "
+                    f"tienen menos de {self.N_MINIMO_CASILLA} casas, así que su valor no es confiable. Pasa el cursor para ver "
+                    "las tres medidas a la vez.")
+        explicacion = self.explicar_calor(d)
+        if explicacion:
+            st.info(_esc(explicacion))
+        st.markdown("**Qué muestra:** el precio por m² depende de la zona (las filas de arriba son más oscuras) y del tamaño: "
+                    "en casi todas las zonas el m² de una casa pequeña cuesta más que el de una grande. En cambio, el precio "
+                    "total de la casa sí sube con el tamaño (elige *Precio típico de la casa* para verlo).")
         self._grafico(self.figura_p4_mapa_m2(d))
         st.markdown("**Cómo leer el mapa:** cada punto es una vivienda; rojo es m² caro y amarillo m² barato. "
                     "La escala va del 5 % al 95 % de los precios para que los extremos no apaguen los colores.")
+        st.markdown("#### El entorno: transporte, comercio y parques")
         self._grafico(self.figura_p4_entorno(d))
-        st.caption("Ojo: en transporte, comercio y parques el precio no sigue un orden claro (por ejemplo, transporte 'Medio' "
-                   "tiene mayor mediana que 'Alto'). Son etiquetas inferidas por NVIDIA Nemotron; se muestran como orientación.")
+        st.markdown("**Cómo leerlo:** cada barra es el precio típico de las casas con ese nivel de entorno; debajo dice cuántas "
+                    "casas son. La línea punteada es la mediana de todas las casas: las barras **azules** quedan por encima y las "
+                    "**naranjas** por debajo. Pasa el cursor sobre una barra para ver en qué zona están esas casas.")
+        for frase in self.explicar_entorno(d):
+            st.markdown(f"- {frase}")
+        st.markdown("**Conclusión:** el entorno por sí solo no explica el precio. Un nivel sale caro cuando sus casas están en "
+                    "una zona cara (por ejemplo, el Eastside) y son más grandes y mejor calificadas. Por eso transporte 'Medio' "
+                    "puede salir más caro que 'Alto': muchas casas de transporte 'Alto' están en zonas de precio medio de Seattle "
+                    "y el sur del condado.")
+        st.caption("Limitación: transporte, comercio y parques son etiquetas inferidas por NVIDIA Nemotron por cuadrante de "
+                   "~4–5 km, no mediciones; se muestran como orientación.")
         top = self.tabla_p4_barrios(d, n_top)
         st.markdown(f"**Top {n_top} barrios por precio típico** (con al menos {N_MINIMO_BARRIO} ventas)")
         st.dataframe(
@@ -678,12 +1141,32 @@ class DashboardAE4:
                            file_name="viviendas_filtradas.csv", mime="text/csv")
 
     # ---------- página ----------
+    SECCIONES = ["🎯 Respuestas", "P1 Tamaño", "P2 Calificación", "P3 Vista al agua", "P4 Ubicación",
+                 "P5 Remodelación", "P6 Mensual", "📘 Proyecto", "🗂 Datos"]
+
+    def _limites(self) -> dict:
+        d = self.datos
+        decadas = sorted(d["Década de construcción"].unique())
+        return {
+            "fechas": (d["Fecha de venta"].min().date(), d["Fecha de venta"].max().date()),
+            "decadas": (decadas[0], decadas[-1]),
+            "precio": (int(d["Precio (USD)"].min()), int(d["Precio (USD)"].max())),
+            "habitaciones": (int(d["Habitaciones"].min()), int(d["Habitaciones"].max())),
+        }
+
     def _restablecer(self) -> None:
+        lim = self._limites()
         st.session_state["f_tamanos"] = ORDEN_TAMANOS
         st.session_state["f_calificacion"] = ORDEN_CALIFICACION
         st.session_state["f_municipios"] = sorted(self.datos["Municipio / Subregión"].dropna().unique())
-        st.session_state["f_fechas"] = (self.datos["Fecha de venta"].min().date(), self.datos["Fecha de venta"].max().date())
+        st.session_state["f_fechas"] = lim["fechas"]
         st.session_state["f_top"] = 10
+        st.session_state["f_vista"] = ORDEN_VISTA
+        st.session_state["f_remodelacion"] = ["No remodelada", "Remodelada"]
+        st.session_state["f_anillo"] = ORDEN_ANILLO
+        st.session_state["f_decadas"] = lim["decadas"]
+        st.session_state["f_precio"] = lim["precio"]
+        st.session_state["f_habitaciones"] = lim["habitaciones"]
 
     def render(self) -> None:
         municipios = sorted(self.datos["Municipio / Subregión"].dropna().unique())
@@ -695,6 +1178,19 @@ class DashboardAE4:
             muni = st.multiselect("Municipio / subregión", municipios, default=municipios, key="f_municipios")
             fechas = st.date_input("Rango de fechas de venta", (fmin, fmax), min_value=fmin, max_value=fmax,
                                    format="DD/MM/YYYY", key="f_fechas")
+            lim = self._limites()
+            with st.expander("Más filtros"):
+                vista = st.multiselect("Vista al agua", ORDEN_VISTA, default=ORDEN_VISTA, key="f_vista")
+                remodelacion = st.multiselect("Condición de remodelación", ["No remodelada", "Remodelada"],
+                                              default=["No remodelada", "Remodelada"], key="f_remodelacion")
+                anillo = st.multiselect("Anillo urbano (distancia al centro comercial)", ORDEN_ANILLO,
+                                        default=ORDEN_ANILLO, key="f_anillo")
+                decadas = st.select_slider("Década de construcción", sorted(self.datos["Década de construcción"].unique()),
+                                           value=lim["decadas"], key="f_decadas")
+                precio = st.slider("Rango de precio (USD)", lim["precio"][0], lim["precio"][1], lim["precio"],
+                                   step=10_000, key="f_precio")
+                habitaciones = st.slider("Habitaciones", lim["habitaciones"][0], lim["habitaciones"][1],
+                                         lim["habitaciones"], key="f_habitaciones")
             n_top = st.slider("Barrios en el ranking (P4)", 5, 25, 10, key="f_top")
             st.button("Restablecer filtros", on_click=self._restablecer, width="stretch")
             st.divider()
@@ -705,16 +1201,18 @@ class DashboardAE4:
         st.title("Factores asociados al precio de venta de viviendas en King County")
         st.info(f"**Pregunta de negocio:** {PREGUNTA_NEGOCIO}")
         with st.expander("Cómo usar este dashboard"):
-            st.markdown("1. Ajusta los filtros de la izquierda; todos los indicadores, gráficos y respuestas se recalculan.\n"
-                        "2. La pestaña **Respuestas de negocio** resume las seis preguntas con su decisión.\n"
-                        "3. Cada pestaña **P1–P6** tiene los gráficos de una pregunta, cómo leerlos y su tabla estadística.\n"
+            st.markdown("1. Ajusta los filtros de la izquierda (abre **Más filtros** para vista, remodelación, década, precio y habitaciones); todos los indicadores, gráficos y respuestas se recalculan.\n"
+                        "2. Elige una sección en la barra de botones de arriba. **Respuestas** resume las seis preguntas con su decisión.\n"
+                        "3. Cada sección **P1–P6** tiene los gráficos de una pregunta, cómo leerlos y su tabla estadística.\n"
                         "4. **Proyecto** explica la necesidad, el dataset y la transformación; **Datos** permite descargar la selección.\n"
                         "5. Pasa el cursor sobre los gráficos para ver los valores exactos.")
 
         if not (isinstance(fechas, tuple) and len(fechas) == 2):
             st.info("Selecciona fecha de inicio y de fin en el filtro.")
             return
-        d = self.filtrar(tamanos, calif, muni, fechas)
+        d = self.filtrar(tamanos, calif, muni, fechas, extra={
+            "vista": vista, "remodelacion": remodelacion, "anillo": anillo, "decadas": decadas,
+            "precio": precio, "habitaciones": habitaciones})
         if d.empty:
             st.warning("Ningún registro cumple los filtros actuales.")
             return
@@ -726,9 +1224,12 @@ class DashboardAE4:
             for col, (nombre, (valor, delta)) in zip(st.columns(3), fila):
                 col.metric(nombre, valor, delta=delta, delta_color="off", border=True)
 
-        tabs = st.tabs(["🎯 Respuestas de negocio", "P1 Tamaño", "P2 Calificación", "P3 Vista al agua",
-                        "P4 Ubicación", "P5 Remodelación", "P6 Mensual", "📘 Proyecto", "🗂 Datos"])
-        with tabs[0]:
+        # Selector de sección en lugar de pestañas: solo se dibuja la sección elegida. Así los mapas se inicializan
+        # con su tamaño real (en una pestaña oculta salen vacíos) y la página responde más rápido.
+        seccion = st.segmented_control("Sección", self.SECCIONES, default=self.SECCIONES[0], key="seccion",
+                                       label_visibility="collapsed") or self.SECCIONES[0]
+        st.divider()
+        if seccion == self.SECCIONES[0]:
             st.subheader("Seis preguntas, seis respuestas (calculadas con la selección actual)")
             for r in self.respuestas(d):
                 with st.container(border=True):
@@ -738,19 +1239,19 @@ class DashboardAE4:
                     c1.markdown(f"📏 **Indicador:** {r['indicador']}")
                     c2.markdown(f"📊 **Cómo se ve:** {r['visual']}")
                     c3.markdown(f"✅ **Decisión:** {r['decision']}")
-        with tabs[1]:
+        elif seccion == self.SECCIONES[1]:
             self.tab_p1(d)
-        with tabs[2]:
+        elif seccion == self.SECCIONES[2]:
             self.tab_p2(d)
-        with tabs[3]:
+        elif seccion == self.SECCIONES[3]:
             self.tab_p3(d)
-        with tabs[4]:
+        elif seccion == self.SECCIONES[4]:
             self.tab_p4(d, n_top)
-        with tabs[5]:
+        elif seccion == self.SECCIONES[5]:
             self.tab_p5(d)
-        with tabs[6]:
+        elif seccion == self.SECCIONES[6]:
             self.tab_p6(d)
-        with tabs[7]:
+        elif seccion == self.SECCIONES[7]:
             self.tab_proyecto()
-        with tabs[8]:
+        else:
             self.tab_datos(d)
