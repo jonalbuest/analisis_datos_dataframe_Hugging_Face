@@ -1,0 +1,260 @@
+REPORTE DEL DATAFRAME
+================================================================================
+Dataset: inria-soda/tabular-benchmark
+Configuración: reg_cat_house_sales
+Split: train
+Muestra / Cobertura: Dataset enriquecido de AE3 usado por el dashboard de AE4
+Filas: 21521
+Columnas: 43
+Duplicados: 0
+
+Columnas y tipos:
+- Habitaciones: int64
+- Baños: float64
+- Área habitable (sqft): int64
+- Área del lote (sqft): int64
+- Vista al agua: object
+- Calificación: int64
+- Área sobre suelo (sqft): int64
+- Área sótano (sqft): int64
+- Año de construcción: int64
+- Año de renovación: int64
+- Latitud: float64
+- Longitud: float64
+- Área habitable vecinos (sqft): int64
+- Área lote vecinos (sqft): int64
+- Año de venta: int64
+- Mes de venta: int64
+- Día de venta: int64
+- Precio (log): float64
+- Fecha de venta: datetime64[ns]
+- Precio (USD): float64
+- Área habitable (m2): float64
+- Área del lote (m2): float64
+- Área habitable vecinos (m2): float64
+- Precio por m2 (USD): float64
+- Periodo de venta: object
+- Antigüedad (años): int64
+- Década de construcción: object
+- Condición de remodelación: object
+- Categoría de tamaño: object
+- Nivel de calificación: object
+- Distancia Downtown Seattle (km): float64
+- Distancia Bellevue Comercial (km): float64
+- Distancia Aeropuerto SeaTac (km): float64
+- Distancia polo comercial más cercano (km): float64
+- Anillo urbano: object
+- Barrio / Sector: object
+- Municipio / Subregión: object
+- Acceso a transporte: object
+- Parques y zonas verdes: object
+- Nivel de comercio y servicios: object
+- Zonas comunes y entorno: object
+- Cuerpo de agua cercano: object
+- Vista al mar o lago: object
+
+Valores nulos por columna (cantidad y porcentaje):
+- Habitaciones: 0 (0.00%)
+- Baños: 0 (0.00%)
+- Área habitable (sqft): 0 (0.00%)
+- Área del lote (sqft): 0 (0.00%)
+- Vista al agua: 0 (0.00%)
+- Calificación: 0 (0.00%)
+- Área sobre suelo (sqft): 0 (0.00%)
+- Área sótano (sqft): 0 (0.00%)
+- Año de construcción: 0 (0.00%)
+- Año de renovación: 0 (0.00%)
+- Latitud: 0 (0.00%)
+- Longitud: 0 (0.00%)
+- Área habitable vecinos (sqft): 0 (0.00%)
+- Área lote vecinos (sqft): 0 (0.00%)
+- Año de venta: 0 (0.00%)
+- Mes de venta: 0 (0.00%)
+- Día de venta: 0 (0.00%)
+- Precio (log): 0 (0.00%)
+- Fecha de venta: 0 (0.00%)
+- Precio (USD): 0 (0.00%)
+- Área habitable (m2): 0 (0.00%)
+- Área del lote (m2): 0 (0.00%)
+- Área habitable vecinos (m2): 0 (0.00%)
+- Precio por m2 (USD): 0 (0.00%)
+- Periodo de venta: 0 (0.00%)
+- Antigüedad (años): 0 (0.00%)
+- Década de construcción: 0 (0.00%)
+- Condición de remodelación: 0 (0.00%)
+- Categoría de tamaño: 0 (0.00%)
+- Nivel de calificación: 0 (0.00%)
+- Distancia Downtown Seattle (km): 0 (0.00%)
+- Distancia Bellevue Comercial (km): 0 (0.00%)
+- Distancia Aeropuerto SeaTac (km): 0 (0.00%)
+- Distancia polo comercial más cercano (km): 0 (0.00%)
+- Anillo urbano: 0 (0.00%)
+- Barrio / Sector: 0 (0.00%)
+- Municipio / Subregión: 0 (0.00%)
+- Acceso a transporte: 0 (0.00%)
+- Parques y zonas verdes: 0 (0.00%)
+- Nivel de comercio y servicios: 0 (0.00%)
+- Zonas comunes y entorno: 0 (0.00%)
+- Cuerpo de agua cercano: 0 (0.00%)
+- Vista al mar o lago: 0 (0.00%)
+
+Estadísticas numéricas:
+                                             count        mean         std        min         25%         50%         75%          max
+Habitaciones                               21521.0       3.377       0.900      1.000       3.000       3.000       4.000       11.000
+Baños                                      21521.0       2.121       0.766      1.000       1.750       2.250       2.500        8.000
+Área habitable (sqft)                      21521.0    2084.382     916.867    390.000    1430.000    1920.000    2550.000    13540.000
+Área del lote (sqft)                       21521.0   15096.243   41470.928    520.000    5040.000    7617.000   10661.000  1651359.000
+Calificación                               21521.0       7.665       1.168      4.000       7.000       7.000       8.000       13.000
+Área sobre suelo (sqft)                    21521.0    1791.923     827.037    390.000    1200.000    1560.000    2220.000     9410.000
+Área sótano (sqft)                         21521.0     292.458     443.148      0.000       0.000       0.000     570.000     4820.000
+Año de construcción                        21521.0    1971.096      29.353   1900.000    1952.000    1975.000    1997.000     2015.000
+Año de renovación                          21521.0      84.394     401.664      0.000       0.000       0.000       0.000     2015.000
+Latitud                                    21521.0      47.560       0.139     47.156      47.471      47.572      47.678       47.778
+Longitud                                   21521.0    -122.214       0.140   -122.519    -122.328    -122.230    -122.125     -121.315
+Área habitable vecinos (sqft)              21521.0    1988.457     685.169    399.000    1490.000    1840.000    2370.000     6210.000
+Área lote vecinos (sqft)                   21521.0   12745.742   27284.681    651.000    5100.000    7620.000   10080.000   871200.000
+Año de venta                               21521.0    2014.323       0.468   2014.000    2014.000    2014.000    2015.000     2015.000
+Mes de venta                               21521.0       6.574       3.115      1.000       4.000       6.000       9.000       12.000
+Día de venta                               21521.0      15.684       8.636      1.000       8.000      16.000      23.000       31.000
+Precio (log)                               21521.0      13.050       0.526     11.264      12.685      13.017      13.377       15.857
+Precio (USD)                               21521.0  541063.726  367399.652  78000.000  323000.000  450000.000  645000.000  7700000.000
+Área habitable (m2)                        21521.0     193.646      85.180     36.230     132.850     178.370     236.900     1257.910
+Área del lote (m2)                         21521.0    1402.488    3852.779     48.310     468.230     707.640     990.440   153416.420
+Área habitable vecinos (m2)                21521.0     184.734      63.654     37.070     138.430     170.940     220.180      576.930
+Precio por m2 (USD)                        21521.0    2839.722    1179.461    942.760    1961.230    2631.320    3423.160     8719.850
+Antigüedad (años)                          21521.0      43.228      29.354      0.000      18.000      39.000      63.000      115.000
+Distancia Downtown Seattle (km)            21521.0      18.445      10.622      0.980       9.780      16.510      25.260       77.090
+Distancia Bellevue Comercial (km)          21521.0      17.250       9.077      0.260      11.330      15.170      21.210       67.370
+Distancia Aeropuerto SeaTac (km)           21521.0      21.418       9.494      1.280      13.490      21.660      28.200       80.060
+Distancia polo comercial más cercano (km)  21521.0      15.355       9.821      0.260       8.060      12.840      19.790       67.370
+
+Resumen de variables categóricas (frecuencias principales):
+
+[Vista al agua] (Valores únicos: 2)
+               Frecuencia  Porcentaje (%)
+Vista al agua                            
+No                  21364           99.27
+Sí                    157            0.73
+
+[Periodo de venta] (Valores únicos: 13)
+                  Frecuencia  Porcentaje (%)
+Periodo de venta                            
+2015-04                 2224           10.33
+2014-07                 2205           10.25
+2014-06                 2168           10.07
+2014-08                 1932            8.98
+2015-03                 1869            8.68
+2014-10                 1865            8.67
+2014-09                 1767            8.21
+2014-05                 1763            8.19
+2014-12                 1464            6.80
+2014-11                 1407            6.54
+
+[Década de construcción] (Valores únicos: 12)
+                        Frecuencia  Porcentaje (%)
+Década de construcción                            
+2000s                         3513           16.32
+1960s                         2653           12.33
+1950s                         2441           11.34
+1970s                         2283           10.61
+1980s                         2281           10.60
+1990s                         2229           10.36
+1940s                         1735            8.06
+2010s                         1241            5.77
+1920s                         1183            5.50
+1910s                          798            3.71
+
+[Condición de remodelación] (Valores únicos: 2)
+                           Frecuencia  Porcentaje (%)
+Condición de remodelación                            
+No remodelada                   20611           95.77
+Remodelada                        910            4.23
+
+[Categoría de tamaño] (Valores únicos: 4)
+                         Frecuencia  Porcentaje (%)
+Categoría de tamaño                                
+2. Mediana (130–199 m²)        8073           37.51
+3. Grande (200–279 m²)         5435           25.25
+1. Pequeña (<130 m²)           4984           23.16
+4. Muy grande (≥280 m²)        3029           14.07
+
+[Nivel de calificación] (Valores únicos: 4)
+                        Frecuencia  Porcentaje (%)
+Nivel de calificación                             
+2. Estándar (7)               8956           41.62
+3. Media-Alta (8–9)           8679           40.33
+1. Baja (4–6)                 2251           10.46
+4. Alta / Lujo (10–13)        1635            7.60
+
+[Anillo urbano] (Valores únicos: 3)
+                                 Frecuencia  Porcentaje (%)
+Anillo urbano                                              
+2. Suburbano cercano (10–20 km)        8386           38.97
+1. Céntrico (<10 km)                   7815           36.31
+3. Periférico (>20 km)                 5320           24.72
+
+[Barrio / Sector] (Valores únicos: 39)
+                                    Frecuencia  Porcentaje (%)
+Barrio / Sector                                               
+Queen Anne / Magnolia                     1343            6.24
+Federal Way                               1091            5.07
+Redmond                                   1062            4.93
+Shoreline / Lake Forest Park              1002            4.66
+Renton                                     977            4.54
+West Seattle                               930            4.32
+Sammamish                                  886            4.12
+Green Lake / Wallingford - Seattle         839            3.90
+Burien / Normandy Park                     822            3.82
+Issaquah                                   762            3.54
+
+[Municipio / Subregión] (Valores únicos: 6)
+                                      Frecuencia  Porcentaje (%)
+Municipio / Subregión                                           
+Seattle                                     6327           29.40
+South King County                           5865           27.25
+Eastside (Bellevue/Kirkland/Redmond)        5805           26.97
+North King County                           2146            9.97
+Foothills / Este Semirrural                 1291            6.00
+Vashon / Islas                                87            0.40
+
+[Acceso a transporte] (Valores únicos: 3)
+                     Frecuencia  Porcentaje (%)
+Acceso a transporte                            
+Alto                      14622           67.94
+Medio                      4809           22.35
+Bajo                       2090            9.71
+
+[Parques y zonas verdes] (Valores únicos: 2)
+                        Frecuencia  Porcentaje (%)
+Parques y zonas verdes                            
+Alta                         19797           91.99
+Media                         1724            8.01
+
+[Nivel de comercio y servicios] (Valores únicos: 3)
+                               Frecuencia  Porcentaje (%)
+Nivel de comercio y servicios                            
+Alto                                12486           58.02
+Medio                                6909           32.10
+Bajo                                 2126            9.88
+
+[Zonas comunes y entorno] (Valores únicos: 4)
+                                      Frecuencia  Porcentaje (%)
+Zonas comunes y entorno                                         
+Urbano denso y comercial                   13133           61.02
+Suburbano residencial familiar              5936           27.58
+Semirrural / Boscoso                        2365           10.99
+Frente costero / lacustre recreativo          87            0.40
+
+[Cuerpo de agua cercano] (Valores únicos: 3)
+                                            Frecuencia  Porcentaje (%)
+Cuerpo de agua cercano                                                
+Lago interior (Washington/Sammamish/Union)       11764           54.66
+Estrecho marino (Puget Sound)                     6670           30.99
+Río / Interior sin costa                          3087           14.34
+
+[Vista al mar o lago] (Valores únicos: 3)
+                             Frecuencia  Porcentaje (%)
+Vista al mar o lago                                    
+Sin vista directa al agua         21364           99.27
+Vista a lago / río interior          81            0.38
+Vista al mar (Puget Sound)           76            0.35
